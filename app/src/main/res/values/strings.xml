@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Barcode Battler</string>
 
+    <!-- Creature Generator Strings -->
     <string name="label_generator">Barcode: </string>
     <string name="button_generator">Generate</string>
 

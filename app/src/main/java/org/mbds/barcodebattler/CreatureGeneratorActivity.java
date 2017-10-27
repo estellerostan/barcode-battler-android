@@ -1,17 +1,22 @@
 package org.mbds.barcodebattler;
 
-import android.support.annotation.IntegerRes;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.mbds.barcodebattler.data.Creature;
+import org.mbds.barcodebattler.data.ICreature;
 import org.mbds.barcodebattler.util.BarcodeToCreatureConverter;
+import org.mbds.barcodebattler.util.BaseActivity;
+import org.mbds.barcodebattler.util.Injector;
 
-public class CreatureGeneratorActivity extends AppCompatActivity {
+import javax.inject.Inject;
+
+public class CreatureGeneratorActivity extends BaseActivity {
+
+    @Inject
+    ICreature creature;
 
     private EditText barcodeEntry;
     private String barcode;
@@ -23,6 +28,9 @@ public class CreatureGeneratorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Injector.getInstance().getAppComponent().inject(this); // remplace le new Creature
+
         setContentView(R.layout.activity_creature_generator);
 
         if (this.getSupportActionBar() != null)
@@ -32,17 +40,19 @@ public class CreatureGeneratorActivity extends AppCompatActivity {
         generateButton = (Button) findViewById(R.id.generate);
         energyView = (TextView) findViewById(R.id.energy);
         strikeView =  (TextView) findViewById(R.id.strike);
-        defenceView = (TextView) findViewById(R.id.defence);
+        defenceView = (TextView) findViewById(R.id.defense);
 
         generateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 barcode = barcodeEntry.getText().toString();
-                Creature creature = BarcodeToCreatureConverter.convert(barcode);
+
+                BarcodeToCreatureConverter converter = new BarcodeToCreatureConverter(creature);
+                creature = converter.convert(barcode);
 
                 String energy = Integer.toString(creature.getEnergy());
                 String strike = Integer.toString(creature.getStrike());
-                String defence = Integer.toString(creature.getDefence());
+                String defence = Integer.toString(creature.getDefense());
 
                 energyView.setText(energy);
                 strikeView.setText(strike);
