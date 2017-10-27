@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="org.mbds.barcodebattler.CreatureGeneratorActivity">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="0.1"
+            android:text="@string/label_generator"/>
+
+        <EditText
+            android:id="@+id/barcodeEntry"
+            android:hint="ex: 036000291452"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
+            android:inputType="number"
+            android:background="@android:drawable/editbox_background" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/generate"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="@string/button_generator"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="@string/label_creature"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="0.1"
+            android:gravity="center"
+            android:text="@string/label_energy"/>
+
+        <TextView
+            android:id="@+id/energy"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="0.9"
+            android:gravity="center"
+            android:text="@string/game_element_default"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="0.1"
+            android:gravity="center"
+            android:text="@string/label_strike"/>
+
+        <TextView
+            android:id="@+id/strike"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="0.9"
+            android:gravity="center"
+            android:text="@string/game_element_default"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="0.1"
+            android:gravity="center"
+            android:text="@string/label_defence"/>
+
+        <TextView
+            android:id="@+id/defence"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="0.9"
+            android:gravity="center"
+            android:text="@string/game_element_default"/>
+    </LinearLayout>
+
+</LinearLayout>
