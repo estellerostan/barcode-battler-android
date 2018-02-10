@@ -5,6 +5,7 @@
     <string name="label_generator">Barcode: </string>
     <string name="button_generator">Generate</string>
     <string name="button_toPool">Voir les créatures</string>
+    <string name="button_toBattle">Battle</string>
 
     <string name="label_creature">Creature:</string>
     <string name="label_energy">HP:</string>
