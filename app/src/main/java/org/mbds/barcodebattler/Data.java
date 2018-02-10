@@ -40,24 +40,24 @@ class Data implements ListAdapter {
         converter = new BarcodeToCreatureConverter(s3);
         s3 = converter.convert(barcode3);
 
-        String barcode4 = "401207336501";
-        converter = new BarcodeToCreatureConverter(s4);
-        s4 = converter.convert(barcode4);
-
-        String barcode5 = "391110346509";
-        converter = new BarcodeToCreatureConverter(s5);
-        s5 = converter.convert(barcode5);
-
-        String barcode6 = "320813183500";
-        converter = new BarcodeToCreatureConverter(s6);
-        s6 = converter.convert(barcode6);
+//        String barcode4 = "401207336501";
+//        converter = new BarcodeToCreatureConverter(s4);
+//        s4 = converter.convert(barcode4);
+//
+//        String barcode5 = "391110346509";
+//        converter = new BarcodeToCreatureConverter(s5);
+//        s5 = converter.convert(barcode5);
+//
+//        String barcode6 = "320813183500";
+//        converter = new BarcodeToCreatureConverter(s6);
+//        s6 = converter.convert(barcode6);
 
         superheroes.add(s1);
         superheroes.add(s2);
         superheroes.add(s3);
-        superheroes.add(s4);
-        superheroes.add(s5);
-        superheroes.add(s6);
+//        superheroes.add(s4);
+//        superheroes.add(s5);
+//        superheroes.add(s6);
     }
 
     @Override

@@ -11,11 +11,19 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.mbds.barcodebattler.data.ICreature;
+import org.mbds.barcodebattler.util.BarcodeBattlerDatabaseAdapter;
 import org.mbds.barcodebattler.util.BaseActivity;
 
+import java.util.ArrayList;
+
 public class CreaturesPoolActivity extends BaseActivity {
+    //This flag is required to avoid first time onResume refreshing
+    static boolean loaded = false;
     private ListView creaturesPool;
     private Data data;
+    private BarcodeBattlerDatabaseAdapter databaseAdapter;
+    private ArrayList<ICreature> superheroes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,13 +33,37 @@ public class CreaturesPoolActivity extends BaseActivity {
 
         Button addCreatureButton = (Button) findViewById(R.id.addCreature);
 
+        databaseAdapter = new BarcodeBattlerDatabaseAdapter(getApplicationContext());
+        databaseAdapter.open();
+
         data = new Data();
+
+//        getApplicationContext().deleteDatabase("database.db"); // DEBUG
+
+        superheroes = data.getSuperheroes();
+        databaseAdapter = new BarcodeBattlerDatabaseAdapter(getApplicationContext());
+        databaseAdapter.open();
+
+        for (ICreature superheroe : superheroes
+                ) {
+            databaseAdapter.insertCreature(superheroe.getName(),
+                    superheroe.getEnergy(),
+                    superheroe.getStrike(),
+                    superheroe.getDefense(),
+                    superheroe.getImageName()
+            );
+        }
+
+        ArrayList<ICreature> savedCreatures = databaseAdapter.getCreatures();
 
         creaturesPool = (ListView) findViewById(R.id.creaturesPool);
         creaturesPool.invalidateViews();
 
+        if (savedCreatures != null) {
+            data.setSuperheroes(savedCreatures);
+        }
+
         if (!data.isEmpty()) {
-            data.getSuperheroes();
             creaturesPool.setAdapter(data);
         } else { // TODO: ?
         }
@@ -45,7 +77,7 @@ public class CreaturesPoolActivity extends BaseActivity {
             }
         });
 
-        creaturesPool.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() { // TODO:
+        creaturesPool.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 AlertDialog.Builder builder;
@@ -60,7 +92,8 @@ public class CreaturesPoolActivity extends BaseActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 data.getSuperheroes().remove(position);
                                 creaturesPool.invalidateViews();
-                                Toast.makeText(getApplicationContext(), "Suppression", Toast.LENGTH_SHORT).show();
+                                int res = databaseAdapter.deleteCreature(position);
+                                Toast.makeText(getApplicationContext(), "Suppression de " + res + " créature", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -83,4 +116,22 @@ public class CreaturesPoolActivity extends BaseActivity {
             }
         });
     }
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//
+//        if (!loaded) {
+//            //First time just set the loaded flag true
+//            loaded = true;
+//        } else {
+//
+//            //Reload data
+//            data.setSuperheroes(databaseAdapter.getCreatures());
+//
+//            // TODO:
+//            adapter.notifyDatasetChanged();
+//        }
+//    }
+
 }
