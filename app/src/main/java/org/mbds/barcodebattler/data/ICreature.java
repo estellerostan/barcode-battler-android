@@ -1,9 +1,11 @@
 package org.mbds.barcodebattler.data;
 
+import android.os.Parcelable;
+
 import dagger.Module;
 
 @Module
-public interface ICreature {
+public interface ICreature extends Parcelable {
     int getEnergy();
 
     void setEnergy(int energy);

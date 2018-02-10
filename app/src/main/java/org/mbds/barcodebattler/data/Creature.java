@@ -1,7 +1,33 @@
 package org.mbds.barcodebattler.data;
 
-public class Creature extends AbstractCreature {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Creature extends AbstractCreature implements Parcelable {
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Creature createFromParcel(Parcel in) {
+            return new Creature(in);
+        }
+
+        public Creature[] newArray(int size) {
+            return new Creature[size];
+        }
+    };
+
     public Creature(int energy, int strike, int defense) {
         super(energy, strike, defense);
+    }
+
+    public Creature() {
+
+    }
+
+    public Creature(Parcel in) {
+        super(in);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 }
