@@ -16,7 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreatureGeneratorActivity"></activity>
+        <activity android:name=".CreatureGeneratorActivity" />
+        <activity android:name=".battle.BattleActivity"></activity>
     </application>
 
 </manifest>

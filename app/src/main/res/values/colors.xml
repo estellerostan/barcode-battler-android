@@ -3,4 +3,15 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="black">#000</color>
+
+    <!--Player color code-->
+
+    <color name="P1Color">#2f17ec</color>
+    <color name="P2Color">#da2822</color>
+
+    <!--Barcode battler color theme-->
+    <color name="HPcolorLabel">#11ae33</color>
+    <color name="STcolorLabel">#1575d6</color>
+    <color name="DFcolorLabel">#e6e032</color>
 </resources>

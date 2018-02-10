@@ -10,4 +10,20 @@
     <string name="label_strike">ST:</string>
     <string name="label_defence">DF:</string>
     <string name="game_element_default">\???</string>
+
+    <!-- Battle Activity -->
+    <string name="label_p1">- PLAYER 1 -</string>
+    <string name="label_p2">- PLAYER 2 -</string>
+    <string name="label_opponent">- OPPONENT -</string>
+    <string name="label_equipment">- EQUIPMENT -</string>
+    <string name="action_attack">Attack</string>
+    <string name="action_use">Use item</string>
+    <string name="msg_damage">Your attack caused %1$d damages...</string>
+    <string name="msg_turn">* %1$s TURN *</string>
+    <string name="msg_equipement">You used %1$s on %2$s...</string>
+    <string name="msg_death">Monster %1$s HP reached 0... </string>
+    <string name="msg_lose">You lose !</string>
+    <string name="msg_win">Opponent\'s monster died ! It\'s your WIN !</string>
+
+
 </resources>
