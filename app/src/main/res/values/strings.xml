@@ -1,15 +1,19 @@
 <resources>
     <string name="app_name">Barcode Battler</string>
 
-    <!-- Creature Generator Strings -->
+    <!-- Creature Generator & Pool Strings -->
     <string name="label_generator">Barcode: </string>
     <string name="button_generator">Generate</string>
+    <string name="button_toPool">Voir les créatures</string>
 
     <string name="label_creature">Creature:</string>
     <string name="label_energy">HP:</string>
     <string name="label_strike">ST:</string>
     <string name="label_defence">DF:</string>
     <string name="game_element_default">\???</string>
+
+    <!-- Creature Pool Strings -->
+    <string name="add_creature">Ajouter une créature</string>
 
     <!-- Battle Activity -->
     <string name="label_p1">- PLAYER 1 -</string>
@@ -24,6 +28,9 @@
     <string name="msg_death">Monster %1$s HP reached 0... </string>
     <string name="msg_lose">You lose !</string>
     <string name="msg_win">Opponent\'s monster died ! It\'s your WIN !</string>
+
+
+
 
 
 </resources>

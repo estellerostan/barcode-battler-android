@@ -1,9 +1,15 @@
 package org.mbds.barcodebattler.data;
 
+import android.os.Parcelable;
+
 import dagger.Module;
 
 @Module
-public interface ICreature {
+public interface ICreature extends Parcelable {
+    String getName();
+
+    void setName(String name);
+
     int getEnergy();
 
     void setEnergy(int energy);
@@ -15,4 +21,8 @@ public interface ICreature {
     int getDefense();
 
     void setDefense(int defense);
+
+    String getImageName();
+
+    void setImageName(String imageName);
 }
