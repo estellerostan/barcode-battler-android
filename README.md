@@ -21,4 +21,4 @@ $ cd ~/AndroidStudioProjects
 $ git clone https://github.com/estellerostan/barcode-battler-android.git
 ```
 * Ouvrir Android Studio
-* File > New > Import Project... > ~/AndroidStudioProjects/barcode-battler-android/app/build.gradle
+* File > New > Import Project... > ~/AndroidStudioProjects/barcode-battler-android/app
