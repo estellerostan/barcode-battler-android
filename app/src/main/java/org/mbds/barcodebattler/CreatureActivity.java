@@ -14,7 +14,7 @@ public class CreatureActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_creature);
+        setContentView(R.layout.activity_superheroe);
 
         TextView name = (TextView) findViewById(R.id.name);
         TextView energy = (TextView) findViewById(R.id.energy);

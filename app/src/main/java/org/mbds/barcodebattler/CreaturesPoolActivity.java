@@ -31,7 +31,7 @@ public class CreaturesPoolActivity extends BaseActivity {
         creaturesPool.invalidateViews();
 
         if (!data.isEmpty()) {
-            data.getCreatures();
+            data.getSuperheroes();
             creaturesPool.setAdapter(data);
         } else { // TODO: ?
         }
@@ -55,10 +55,10 @@ public class CreaturesPoolActivity extends BaseActivity {
                     builder = new AlertDialog.Builder(CreaturesPoolActivity.this);
                 }
                 builder.setTitle("Supprimer une créature")
-                        .setMessage("Êtes-vous sûr de vouloir supprimer " + data.getCreatures().get(position).getName() + " ?")
+                        .setMessage("Êtes-vous sûr de vouloir supprimer " + data.getSuperheroes().get(position).getName() + " ?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                data.getCreatures().remove(position);
+                                data.getSuperheroes().remove(position);
                                 creaturesPool.invalidateViews();
                                 Toast.makeText(getApplicationContext(), "Suppression", Toast.LENGTH_SHORT).show();
                             }

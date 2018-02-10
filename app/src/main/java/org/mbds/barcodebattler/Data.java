@@ -17,31 +17,47 @@ import org.mbds.barcodebattler.util.BarcodeToCreatureConverter;
 import java.util.ArrayList;
 
 class Data implements ListAdapter {
-    private ArrayList<ICreature> creatures;
+    private ArrayList<ICreature> superheroes;
 
     Data() {
-        creatures = new ArrayList<>();
-        // dummy data
-
-        ICreature c1 = new Creature("Beast Feast", 1, 1, 1, "beast_feast");
-        ICreature c2 = new Creature("Cool Candy", 1, 2, 2, "cool_candy");
-        ICreature c3 = new Creature("Jam Bam", 1, 2, 3, "jam_bam");
+        superheroes = new ArrayList<>();
+        ICreature s1 = new Creature("Beast Feast", 1, 1, 1, "beast_feast");
+        ICreature s2 = new Creature("Cool Candy", 1, 2, 2, "cool_candy");
+        ICreature s3 = new Creature("Jam Bam", 1, 2, 3, "jam_bam");
+        ICreature s4 = new Creature("Jaw Breaker", 1, 2, 3, "jaw_breaker");
+        ICreature s5 = new Creature("Mega Blaster", 1, 2, 3, "mega_blaster");
+        ICreature s6 = new Creature("Razor Fist", 1, 2, 3, "razor_fist");
 
         String barcode1 = "340912373503";
-        BarcodeToCreatureConverter converter = new BarcodeToCreatureConverter(c1);
-        c1 = converter.convert(barcode1);
+        BarcodeToCreatureConverter converter = new BarcodeToCreatureConverter(s1);
+        s1 = converter.convert(barcode1);
 
         String barcode2 = "331010383501";
-        converter = new BarcodeToCreatureConverter(c2);
-        c2 = converter.convert(barcode2);
+        converter = new BarcodeToCreatureConverter(s2);
+        s2 = converter.convert(barcode2);
 
         String barcode3 = "9691260136502";
-        converter = new BarcodeToCreatureConverter(c3);
-        c3 = converter.convert(barcode3);
+        converter = new BarcodeToCreatureConverter(s3);
+        s3 = converter.convert(barcode3);
 
-        creatures.add(c1);
-        creatures.add(c2);
-        creatures.add(c3);
+        String barcode4 = "401207336501";
+        converter = new BarcodeToCreatureConverter(s4);
+        s4 = converter.convert(barcode4);
+
+        String barcode5 = "391110346509";
+        converter = new BarcodeToCreatureConverter(s5);
+        s5 = converter.convert(barcode5);
+
+        String barcode6 = "320813183500";
+        converter = new BarcodeToCreatureConverter(s6);
+        s6 = converter.convert(barcode6);
+
+        superheroes.add(s1);
+        superheroes.add(s2);
+        superheroes.add(s3);
+        superheroes.add(s4);
+        superheroes.add(s5);
+        superheroes.add(s6);
     }
 
     @Override
@@ -66,12 +82,12 @@ class Data implements ListAdapter {
 
     @Override
     public int getCount() {
-        return creatures.size();
+        return superheroes.size();
     }
 
     @Override
     public ICreature getItem(int position) {
-        return creatures.get(position);
+        return superheroes.get(position);
     }
 
     @Override
@@ -90,23 +106,23 @@ class Data implements ListAdapter {
 
         if (convertView == null) {
             Context context = parent.getContext();
-            returnView = View.inflate(context, R.layout.activity_creature, null);
+            returnView = View.inflate(context, R.layout.activity_superheroe, null);
         } else {
             returnView = convertView;
         }
         TextView name = returnView.findViewById(R.id.name);
-        name.setText(String.valueOf(creatures.get(position).getName()));
+        name.setText(String.valueOf(superheroes.get(position).getName()));
         TextView energy = returnView.findViewById(R.id.energy);
-        energy.setText(String.valueOf(creatures.get(position).getEnergy()));
+        energy.setText(String.valueOf(superheroes.get(position).getEnergy()));
         TextView strike = returnView.findViewById(R.id.strike);
-        strike.setText(String.valueOf(creatures.get(position).getStrike()));
+        strike.setText(String.valueOf(superheroes.get(position).getStrike()));
         TextView defense = returnView.findViewById(R.id.defense);
-        defense.setText(String.valueOf(creatures.get(position).getDefense()));
+        defense.setText(String.valueOf(superheroes.get(position).getDefense()));
 
         // TODO:
         ImageView image = returnView.findViewById(R.id.icon);
 
-        String mDrawableName = creatures.get(position).getImageName();
+        String mDrawableName = superheroes.get(position).getImageName();
         int resID = returnView.getResources().getIdentifier(mDrawableName, "drawable", returnView.getContext().getPackageName());
 
         Bitmap icon = BitmapFactory.decodeResource(returnView.getContext().getResources(),
@@ -129,18 +145,18 @@ class Data implements ListAdapter {
 
     @Override
     public boolean isEmpty() {
-        return creatures.isEmpty();
+        return superheroes.isEmpty();
     }
 
-    ArrayList<ICreature> getCreatures() {
-        return creatures;
+    ArrayList<ICreature> getSuperheroes() {
+        return superheroes;
     }
 
-    public void setCreatures(ArrayList<ICreature> creatures) {
-        this.creatures = creatures;
+    public void setSuperheroes(ArrayList<ICreature> superheroes) {
+        this.superheroes = superheroes;
     }
 
-    public void addCreature(ICreature creature) {
-        creatures.add(creature);
+    public void addSuperheroe(ICreature superheroe) {
+        superheroes.add(superheroe);
     }
 }
