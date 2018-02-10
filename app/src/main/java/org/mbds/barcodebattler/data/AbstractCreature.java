@@ -3,6 +3,7 @@ package org.mbds.barcodebattler.data;
 import android.os.Parcel;
 
 abstract class AbstractCreature implements ICreature {
+    private String barcode;
     private String name;
     private int energy;
     private int strike;
@@ -13,7 +14,8 @@ abstract class AbstractCreature implements ICreature {
 
     }
 
-    AbstractCreature(String name, int energy, int strike, int defense, String imageName) {
+    AbstractCreature(String barcode, String name, int energy, int strike, int defense, String imageName) {
+        this.barcode = barcode;
         this.name = name;
         this.energy = energy;
         this.strike = strike;
@@ -22,15 +24,16 @@ abstract class AbstractCreature implements ICreature {
     }
 
     AbstractCreature(Parcel in) {
-        String[] data = new String[5];
+        String[] data = new String[6];
         in.readStringArray(data);
 
         try {
-            this.name = data[0];
-            this.energy = Integer.parseInt(data[1]);
-            this.strike = Integer.parseInt(data[2]);
-            this.defense = Integer.parseInt(data[3]);
-            this.imageName = data[4];
+            this.barcode = data[0];
+            this.name = data[1];
+            this.energy = Integer.parseInt(data[2]);
+            this.strike = Integer.parseInt(data[3]);
+            this.defense = Integer.parseInt(data[4]);
+            this.imageName = data[5];
         } catch (NumberFormatException e) {
             //Never trust user input :)
             // TODO:
@@ -40,7 +43,15 @@ abstract class AbstractCreature implements ICreature {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[]{name, String.valueOf(getEnergy()), String.valueOf(getStrike()), String.valueOf(getDefense()), imageName});
+        dest.writeStringArray(new String[]{barcode, name, String.valueOf(getEnergy()), String.valueOf(getStrike()), String.valueOf(getDefense()), imageName});
+    }
+
+    public final String getBarcode() {
+        return barcode;
+    }
+
+    public final void setBarcode(String barcode) {
+        this.barcode = barcode;
     }
 
     public String getName() {

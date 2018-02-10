@@ -14,8 +14,8 @@ public class Creature extends AbstractCreature implements Parcelable {
         }
     };
 
-    public Creature(String name, int energy, int strike, int defense, String imageName) {
-        super(name, energy, strike, defense, imageName);
+    public Creature(String barcode, String name, int energy, int strike, int defense, String imageName) {
+        super(barcode, name, energy, strike, defense, imageName);
     }
 
     public Creature() {

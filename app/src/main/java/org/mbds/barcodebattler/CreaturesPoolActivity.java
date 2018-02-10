@@ -44,14 +44,20 @@ public class CreaturesPoolActivity extends BaseActivity {
         databaseAdapter = new BarcodeBattlerDatabaseAdapter(getApplicationContext());
         databaseAdapter.open();
 
-        for (ICreature superheroe : superheroes
+        int i = 0;
+        for (ICreature superhero : superheroes
                 ) {
-            databaseAdapter.insertCreature(superheroe.getName(),
-                    superheroe.getEnergy(),
-                    superheroe.getStrike(),
-                    superheroe.getDefense(),
-                    superheroe.getImageName()
-            );
+
+            if (databaseAdapter.getCreature(superhero.getBarcode()) == null) {
+                databaseAdapter.insertCreature(
+                        superhero.getBarcode(),
+                        superhero.getName(),
+                        superhero.getEnergy(),
+                        superhero.getStrike(),
+                        superhero.getDefense(),
+                        superhero.getImageName()
+                );
+            }
         }
 
         ArrayList<ICreature> savedCreatures = databaseAdapter.getCreatures();

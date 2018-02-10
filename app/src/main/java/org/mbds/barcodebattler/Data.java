@@ -22,43 +22,45 @@ class Data implements ListAdapter {
 
     Data() {
         superheroes = new ArrayList<>();
-        ICreature s1 = new Creature("Beast Feast", 1, 1, 1, "beast_feast");
-        ICreature s2 = new Creature("Cool Candy", 1, 2, 2, "cool_candy");
-        ICreature s3 = new Creature("Jam Bam", 1, 2, 3, "jam_bam");
-        ICreature s4 = new Creature("Jaw Breaker", 1, 2, 3, "jaw_breaker");
-        ICreature s5 = new Creature("Mega Blaster", 1, 2, 3, "mega_blaster");
-        ICreature s6 = new Creature("Razor Fist", 1, 2, 3, "razor_fist");
 
         String barcode1 = "340912373503";
+        String barcode2 = "331010383501";
+        String barcode3 = "9691260136502";
+        String barcode4 = "401207336501";
+        String barcode5 = "391110346509";
+        String barcode6 = "320813183500";
+
+        ICreature s1 = new Creature(barcode1, "Beast Feast", 1, 1, 1, "beast_feast");
+        ICreature s2 = new Creature(barcode2, "Cool Candy", 1, 2, 2, "cool_candy");
+        ICreature s3 = new Creature(barcode3, "Jam Bam", 1, 2, 3, "jam_bam");
+        ICreature s4 = new Creature(barcode4, "Jaw Breaker", 1, 2, 3, "jaw_breaker");
+        ICreature s5 = new Creature(barcode5, "Mega Blaster", 1, 2, 3, "mega_blaster");
+        ICreature s6 = new Creature(barcode6, "Razor Fist", 1, 2, 3, "razor_fist");
+
         BarcodeToCreatureConverter converter = new BarcodeToCreatureConverter(s1);
         s1 = converter.convert(barcode1);
 
-        String barcode2 = "331010383501";
         converter = new BarcodeToCreatureConverter(s2);
         s2 = converter.convert(barcode2);
 
-        String barcode3 = "9691260136502";
         converter = new BarcodeToCreatureConverter(s3);
         s3 = converter.convert(barcode3);
 
-//        String barcode4 = "401207336501";
-//        converter = new BarcodeToCreatureConverter(s4);
-//        s4 = converter.convert(barcode4);
-//
-//        String barcode5 = "391110346509";
-//        converter = new BarcodeToCreatureConverter(s5);
-//        s5 = converter.convert(barcode5);
-//
-//        String barcode6 = "320813183500";
-//        converter = new BarcodeToCreatureConverter(s6);
-//        s6 = converter.convert(barcode6);
+        converter = new BarcodeToCreatureConverter(s4);
+        s4 = converter.convert(barcode4);
+
+        converter = new BarcodeToCreatureConverter(s5);
+        s5 = converter.convert(barcode5);
+
+        converter = new BarcodeToCreatureConverter(s6);
+        s6 = converter.convert(barcode6);
 
         superheroes.add(s1);
         superheroes.add(s2);
         superheroes.add(s3);
-//        superheroes.add(s4);
-//        superheroes.add(s5);
-//        superheroes.add(s6);
+        superheroes.add(s4);
+        superheroes.add(s5);
+        superheroes.add(s6);
     }
 
     public static int calculateInSampleSize(
@@ -146,7 +148,7 @@ class Data implements ListAdapter {
 
         if (convertView == null) {
             Context context = parent.getContext();
-            returnView = View.inflate(context, R.layout.activity_superheroe, null);
+            returnView = View.inflate(context, R.layout.activity_superhero, null);
         } else {
             returnView = convertView;
         }
@@ -197,7 +199,7 @@ class Data implements ListAdapter {
         return superheroes;
     }
 
-    public void setSuperheroes(ArrayList<ICreature> superheroes) {
+    void setSuperheroes(ArrayList<ICreature> superheroes) {
         this.superheroes = superheroes;
     }
 

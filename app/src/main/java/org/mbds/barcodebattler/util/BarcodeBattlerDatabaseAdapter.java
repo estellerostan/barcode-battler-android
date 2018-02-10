@@ -41,10 +41,11 @@ public class BarcodeBattlerDatabaseAdapter {
     }
 
     // method to insert a record in Table
-    public void insertCreature(String name, int energy, int strike, int defense, String imageName) {
+    public void insertCreature(String barcode, String name, int energy, int strike, int defense, String imageName) {
         try {
             ContentValues newValues = new ContentValues();
             // Assign values for each column.
+            newValues.put(BarcodeBattlerOpenHelper.CREATURE_BARCODE, barcode);
             newValues.put(BarcodeBattlerOpenHelper.CREATURE_NAME, name);
             newValues.put(BarcodeBattlerOpenHelper.CREATURE_ENERGY, energy);
             newValues.put(BarcodeBattlerOpenHelper.CREATURE_STRIKE, strike);
@@ -76,6 +77,7 @@ public class BarcodeBattlerDatabaseAdapter {
         db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(BarcodeBattlerOpenHelper.CREATURE_TABLE_NAME, new String[]{
                         BarcodeBattlerOpenHelper.CREATURE_ID,
+                        BarcodeBattlerOpenHelper.CREATURE_BARCODE,
                         BarcodeBattlerOpenHelper.CREATURE_NAME,
                         BarcodeBattlerOpenHelper.CREATURE_ENERGY,
                         BarcodeBattlerOpenHelper.CREATURE_STRIKE,
@@ -89,11 +91,12 @@ public class BarcodeBattlerDatabaseAdapter {
         if (cursor.moveToFirst()) {
             do {
                 ICreature temp = new Creature();
-                temp.setName(cursor.getString(1));
-                temp.setEnergy(Integer.parseInt(cursor.getString(2)));
-                temp.setStrike(Integer.parseInt(cursor.getString(3)));
-                temp.setDefense(Integer.parseInt(cursor.getString(4)));
-                temp.setImageName(cursor.getString(5));
+                temp.setBarcode(cursor.getString(1));
+                temp.setName(cursor.getString(2));
+                temp.setEnergy(Integer.parseInt(cursor.getString(3)));
+                temp.setStrike(Integer.parseInt(cursor.getString(4)));
+                temp.setDefense(Integer.parseInt(cursor.getString(5)));
+                temp.setImageName(cursor.getString(6));
 
                 creatures.add(temp);
             }
@@ -103,5 +106,23 @@ public class BarcodeBattlerDatabaseAdapter {
             cursor.close();
         }
         return creatures;
+    }
+
+    public String getCreature(String barcode) {
+        String empName = "";
+        try (Cursor cursor = db.rawQuery("SELECT * FROM creature WHERE barcode=?", new String[]{barcode + ""})) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+
+                ICreature temp = new Creature();
+                temp.setBarcode(cursor.getString(1));
+                temp.setName(cursor.getString(2));
+                temp.setEnergy(Integer.parseInt(cursor.getString(3)));
+                temp.setStrike(Integer.parseInt(cursor.getString(4)));
+                temp.setDefense(Integer.parseInt(cursor.getString(5)));
+                temp.setImageName(cursor.getString(6));
+            }
+            return empName;
+        }
     }
 }

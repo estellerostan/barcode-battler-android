@@ -11,6 +11,6 @@ class AppModule {
 
     @Provides
     ICreature providesCreature() {
-        return new Creature("", 0, 0, 0, "");
+        return new Creature("", "", 0, 0, 0, "");
     }
 }
