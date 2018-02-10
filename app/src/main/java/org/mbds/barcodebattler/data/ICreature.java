@@ -17,4 +17,8 @@ public interface ICreature extends Parcelable {
     int getDefense();
 
     void setDefense(int defense);
+
+    String getImageName();
+
+    void setImageName(String imageName);
 }

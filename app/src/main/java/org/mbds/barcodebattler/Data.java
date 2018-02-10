@@ -21,9 +21,9 @@ class Data implements ListAdapter {
     Data() {
         creatures = new ArrayList<>();
         // dummy data
-        Creature c1 = new Creature(1, 1, 1);
-        Creature c2 = new Creature(1, 2, 2);
-        Creature c3 = new Creature(1, 2, 3);
+        Creature c1 = new Creature(1, 1, 1, "air_dragon");
+        Creature c2 = new Creature(1, 2, 2, "baguza");
+        Creature c3 = new Creature(1, 2, 3, "barbirian");
 
         creatures.add(c1);
         creatures.add(c2);
@@ -90,8 +90,11 @@ class Data implements ListAdapter {
         // TODO:
         ImageView image = returnView.findViewById(R.id.icon);
 
+        String mDrawableName = creatures.get(position).getImageName();
+        int resID = returnView.getResources().getIdentifier(mDrawableName, "drawable", returnView.getContext().getPackageName());
+
         Bitmap icon = BitmapFactory.decodeResource(returnView.getContext().getResources(),
-                R.drawable.air_dragon);
+                resID);
 
         image.setImageBitmap(icon);
 
