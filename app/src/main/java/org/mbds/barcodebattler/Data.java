@@ -21,9 +21,9 @@ class Data implements ListAdapter {
     Data() {
         creatures = new ArrayList<>();
         // dummy data
-        Creature c1 = new Creature(1, 1, 1, "air_dragon");
-        Creature c2 = new Creature(1, 2, 2, "baguza");
-        Creature c3 = new Creature(1, 2, 3, "barbirian");
+        Creature c1 = new Creature("Air Dragon", 1, 1, 1, "air_dragon");
+        Creature c2 = new Creature("Baguza", 1, 2, 2, "baguza");
+        Creature c3 = new Creature("Barbirian", 1, 2, 3, "barbirian");
 
         creatures.add(c1);
         creatures.add(c2);
@@ -80,6 +80,8 @@ class Data implements ListAdapter {
         } else {
             returnView = convertView;
         }
+        TextView name = returnView.findViewById(R.id.name);
+        name.setText(String.valueOf(creatures.get(position).getName()));
         TextView energy = returnView.findViewById(R.id.energy);
         energy.setText(String.valueOf(creatures.get(position).getEnergy()));
         TextView strike = returnView.findViewById(R.id.strike);

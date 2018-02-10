@@ -3,6 +3,7 @@ package org.mbds.barcodebattler.data;
 import android.os.Parcel;
 
 abstract class AbstractCreature implements ICreature {
+    private String name;
     private int energy;
     private int strike;
     private int defense;
@@ -12,7 +13,8 @@ abstract class AbstractCreature implements ICreature {
 
     }
 
-    AbstractCreature(int energy, int strike, int defense, String imageName) {
+    AbstractCreature(String name, int energy, int strike, int defense, String imageName) {
+        this.name = name;
         this.energy = energy;
         this.strike = strike;
         this.defense = defense;
@@ -20,14 +22,15 @@ abstract class AbstractCreature implements ICreature {
     }
 
     AbstractCreature(Parcel in) {
-        String[] data = new String[4];
+        String[] data = new String[5];
         in.readStringArray(data);
 
         try {
-            this.energy = Integer.parseInt(data[0]);
-            this.strike = Integer.parseInt(data[1]);
-            this.defense = Integer.parseInt(data[2]);
-            this.imageName = data[3];
+            this.name = data[0];
+            this.energy = Integer.parseInt(data[1]);
+            this.strike = Integer.parseInt(data[2]);
+            this.defense = Integer.parseInt(data[3]);
+            this.imageName = data[4];
         } catch (NumberFormatException e) {
             //Never trust user input :)
             // TODO:
@@ -37,7 +40,15 @@ abstract class AbstractCreature implements ICreature {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[]{String.valueOf(getEnergy()), String.valueOf(getStrike()), String.valueOf(getDefense()), imageName});
+        dest.writeStringArray(new String[]{name, String.valueOf(getEnergy()), String.valueOf(getStrike()), String.valueOf(getDefense()), imageName});
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public final int getEnergy() {

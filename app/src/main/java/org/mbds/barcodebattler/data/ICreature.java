@@ -6,6 +6,10 @@ import dagger.Module;
 
 @Module
 public interface ICreature extends Parcelable {
+    String getName();
+
+    void setName(String name);
+
     int getEnergy();
 
     void setEnergy(int energy);

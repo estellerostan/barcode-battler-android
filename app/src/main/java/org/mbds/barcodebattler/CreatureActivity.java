@@ -16,6 +16,7 @@ public class CreatureActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creature);
 
+        TextView name = (TextView) findViewById(R.id.name);
         TextView energy = (TextView) findViewById(R.id.energy);
         TextView strike = (TextView) findViewById(R.id.strike);
         TextView defense = (TextView) findViewById(R.id.defense);
@@ -25,6 +26,7 @@ public class CreatureActivity extends BaseActivity {
         ICreature creature = extras.getParcelable("creature");
 
         assert creature != null;
+        name.setText(String.valueOf(creature.getName()));
         energy.setText(String.valueOf(creature.getEnergy()));
         strike.setText(String.valueOf(creature.getStrike()));
         defense.setText(String.valueOf(creature.getDefense()));
