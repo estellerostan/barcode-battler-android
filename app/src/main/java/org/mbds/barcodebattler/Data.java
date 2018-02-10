@@ -2,8 +2,11 @@ package org.mbds.barcodebattler;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -21,19 +24,6 @@ class Data implements ListAdapter {
         Creature c1 = new Creature(1, 1, 1);
         Creature c2 = new Creature(1, 2, 2);
         Creature c3 = new Creature(1, 2, 3);
-
-//        Creature c1 = new Creature();
-//        c1.setEnergy(1);
-//        c1.setStrike(1);
-//        c1.setDefense(1);
-//        Creature c2 = new Creature();
-//        c2.setEnergy(1);
-//        c2.setStrike(1);
-//        c2.setDefense(1);
-//        Creature c3 = new Creature();
-//        c3.setEnergy(1);
-//        c3.setStrike(1);
-//        c3.setDefense(1);
 
         creatures.add(c1);
         creatures.add(c2);
@@ -98,11 +88,13 @@ class Data implements ListAdapter {
         defense.setText(String.valueOf(creatures.get(position).getDefense()));
 
         // TODO:
-//        ImageView image = returnView.findViewById(R.id.icon);
+        ImageView image = returnView.findViewById(R.id.icon);
 
-//        if (creatures.get(position).image != null) {
-//            image.setImageBitmap(creatures.get(position).image);
-//        }
+        Bitmap icon = BitmapFactory.decodeResource(returnView.getContext().getResources(),
+                R.drawable.air_dragon);
+
+        image.setImageBitmap(icon);
+
         return returnView;
     }
 
