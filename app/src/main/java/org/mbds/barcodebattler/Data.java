@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import org.mbds.barcodebattler.data.Creature;
 import org.mbds.barcodebattler.data.ICreature;
+import org.mbds.barcodebattler.util.BarcodeToCreatureConverter;
 
 import java.util.ArrayList;
 
@@ -21,9 +22,22 @@ class Data implements ListAdapter {
     Data() {
         creatures = new ArrayList<>();
         // dummy data
-        Creature c1 = new Creature("Air Dragon", 1, 1, 1, "air_dragon");
-        Creature c2 = new Creature("Baguza", 1, 2, 2, "baguza");
-        Creature c3 = new Creature("Barbirian", 1, 2, 3, "barbirian");
+
+        ICreature c1 = new Creature("Beast Feast", 1, 1, 1, "beast_feast");
+        ICreature c2 = new Creature("Cool Candy", 1, 2, 2, "cool_candy");
+        ICreature c3 = new Creature("Jam Bam", 1, 2, 3, "jam_bam");
+
+        String barcode1 = "340912373503";
+        BarcodeToCreatureConverter converter = new BarcodeToCreatureConverter(c1);
+        c1 = converter.convert(barcode1);
+
+        String barcode2 = "331010383501";
+        converter = new BarcodeToCreatureConverter(c2);
+        c2 = converter.convert(barcode2);
+
+        String barcode3 = "9691260136502";
+        converter = new BarcodeToCreatureConverter(c3);
+        c3 = converter.convert(barcode3);
 
         creatures.add(c1);
         creatures.add(c2);
