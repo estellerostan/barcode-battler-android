@@ -149,8 +149,7 @@ public class CreaturesPoolActivity extends BaseActivity {
                         creature.getImageName()
                 );
                 ICreature addedCreature = databaseAdapter.getCreature(creature.getBarcode());
-                // TODO : ajouter un nom different
-//                databaseAdapter.updateCreature(addedCreature.getId(), "Barcode challenger " + addedCreature.getId());
+                databaseAdapter.updateCreature(addedCreature.getId(), "Barcode challenger " + addedCreature.getId());
 
                 customAdapter.add(addedCreature);
                 customAdapter.notifyDataSetChanged();

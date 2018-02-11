@@ -68,7 +68,7 @@ public class BarcodeBattlerDatabaseAdapter {
         cv.put(BarcodeBattlerOpenHelper.CREATURE_NAME, name);
 
         db = dbHelper.getWritableDatabase();
-        db.update(BarcodeBattlerOpenHelper.CREATURE_TABLE_NAME, cv, "_id=" + id, null);
+        db.update(BarcodeBattlerOpenHelper.CREATURE_TABLE_NAME, cv, "id=" + id, null);
     }
 
     public int deleteCreature(int position) {
