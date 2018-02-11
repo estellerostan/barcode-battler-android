@@ -34,6 +34,8 @@ public class BattleActivity extends AppCompatActivity {
     TextView P1Name;
     ImageView P1Image;
 
+    List<ICreature> P1creatures;
+
     //---------------------------
 
     // Player 2 stats view
@@ -45,6 +47,8 @@ public class BattleActivity extends AppCompatActivity {
     TextView P2Name;
     ImageView P2Image;
 
+    List<ICreature> P2creatures;
+
     //TextView gameMsg;
     EditText gameMsg;
 
@@ -53,41 +57,16 @@ public class BattleActivity extends AppCompatActivity {
     Button buttonTurn;
 
     Battle battle;
-
+    BarcodeBattlerDatabaseAdapter databaseAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_battle);
 
-        final String superheroType = "SUPERHERO";
+        P1creatures = new ArrayList<>();
 
-        String barcode1 = "340912373503";
-        String barcode2 = "331010383501";
-        String barcode3 = "9691260136502";
-        String barcode4 = "401207336501";
-        String barcode5 = "391110346509";
-        String barcode6 = "320813183500";
-
-        ICreature s1 = new Creature(barcode1, "Beast Feast", 500, 300, 400, "beast_feast", superheroType);
-        ICreature s2 = new Creature(barcode2, "Cool Candy", 400, 250, 300, "cool_candy", superheroType);
-        ICreature s3 = new Creature(barcode3, "Jam Bam", 1000, 250, 300, "jam_bam", superheroType);
-        ICreature s4 = new Creature(barcode4, "Jaw Breaker", 1, 2, 3, "jaw_breaker", superheroType);
-        ICreature s5 = new Creature(barcode5, "Mega Blaster", 1, 2, 3, "mega_blaster", superheroType);
-        ICreature s6 = new Creature(barcode6, "Razor Fist", 1000, 200, 300, "razor_fist", superheroType);
-
-
-
-        List<ICreature> P1creatures = new ArrayList<ICreature>();
-        P1creatures.add(s1);
-        P1creatures.add(s3);
-
-        List<ICreature> P2creatures = new ArrayList<ICreature>();
-        P2creatures.add(s2);
-        P2creatures.add(s6);
-
-        battle = new Battle(P1creatures, P2creatures, this);
-
+        P2creatures = new ArrayList<>();
 
         P1StatsCreatureName = (TextView) findViewById(R.id.monsterInfoP1);
         P2StatsCreatureName = (TextView) findViewById(R.id.monsterInfoP2);
@@ -108,64 +87,8 @@ public class BattleActivity extends AppCompatActivity {
         gameMsg = (EditText) findViewById(R.id.game_msg);
         gameMsg.setEnabled(false);
 
-        // TODO: a deplacer + sauvegarde du monstre choisit au debut du combat
-        BarcodeBattlerDatabaseAdapter databaseAdapter = new BarcodeBattlerDatabaseAdapter(getApplicationContext());
+        databaseAdapter = new BarcodeBattlerDatabaseAdapter(getApplicationContext());
         databaseAdapter.open();
-
-        enemy = databaseAdapter.getEnemy();
-        // Load P2
-        if (enemy != null) {
-            P2StatsCreatureName.setText(enemy.getName());
-            P2HP.setText(String.valueOf(enemy.getEnergy()));
-            P2ST.setText(String.valueOf(enemy.getStrike()));
-            P2DF.setText(String.valueOf(enemy.getDefense()));
-
-            String mDrawableN = enemy.getImageName();
-            int resI = getResources().getIdentifier(mDrawableN, "drawable", getApplicationContext().getPackageName());
-
-            Bitmap bitma = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                    resI);
-            P2Image.setImageBitmap(bitma);
-        } else {
-            LoadPreferences();
-        }
-
-        // Load P! from various sources
-        if (getIntent().getExtras() != null) {
-            creature = getIntent().getExtras().getParcelable("creatureP1");
-
-            if (creature != null) {
-                P1StatsCreatureName.setText(creature.getName());
-                P1HP.setText(String.valueOf(creature.getEnergy()));
-                P1ST.setText(String.valueOf(creature.getStrike()));
-                P1DF.setText(String.valueOf(creature.getDefense()));
-
-                String mDrawableName = creature.getImageName();
-                int resID = getResources().getIdentifier(mDrawableName, "drawable", getApplicationContext().getPackageName());
-
-                Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                        resID);
-                P1Image.setImageBitmap(bitmap);
-
-                // TOOD: inserer en db le match courant ?
-                Toast.makeText(this, "Début du combat", Toast.LENGTH_LONG).show();
-            }
-        } else if (savedInstanceState != null) {
-            P1StatsCreatureName.setText(savedInstanceState.getString("hero_name"));
-            P1HP.setText(savedInstanceState.getInt("hero_energy"));
-            P1ST.setText(savedInstanceState.getInt("hero_strike"));
-            P1DF.setText(savedInstanceState.getInt("hero_defense"));
-            String mDrawableName = savedInstanceState.getString("hero_imageName");
-            int resID = getResources().getIdentifier(mDrawableName, "drawable", getApplicationContext().getPackageName());
-
-            Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                    resID);
-            P1Image.setImageBitmap(bitmap);
-            Toast.makeText(this, "Reprise du combat", Toast.LENGTH_LONG).show();
-        } else {
-            LoadPreferences();
-            Toast.makeText(this, "Reprise du combat", Toast.LENGTH_LONG).show();
-        }
 
         buttonTurn = (Button) findViewById(R.id.btn_turn);
         buttonTurn.setText(R.string.btn_start);
@@ -201,7 +124,6 @@ public class BattleActivity extends AppCompatActivity {
             }
         });
 
-
         // -- View Component init : --
         setPlayerCreature(Player.PLAYER1);
         setPlayerCreature(Player.PLAYER2);
@@ -216,33 +138,57 @@ public class BattleActivity extends AppCompatActivity {
 
         switch (player) {
             case PLAYER1:
-                P1StatsCreatureName.setText(battle.getPlayerCreatureName(Player.PLAYER1));
-                P1Name.setText(battle.getPlayerCreatureName(Player.PLAYER1));
-                P1HP.setText(Integer.toString(battle.getBattleState().getPlayer1CurrentCreature().getEnergy()));
-                P1ST.setText(Integer.toString(battle.getBattleState().getPlayer1CurrentCreature().getStrike()));
-                P1DF.setText(Integer.toString(battle.getBattleState().getPlayer1CurrentCreature().getDefense()));
-                // TODO : les images
-                mDrawableN= battle.getBattleState().getPlayer1CurrentCreature().getImageName();
-                resI = getResources().getIdentifier(mDrawableN, "drawable", getApplicationContext().getPackageName());
-                bitma = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                        resI);
-                P1Image.setImageBitmap(bitma);
+                // Load P! from various sources
+                if (getIntent().getExtras() != null) {
+                    creature = getIntent().getExtras().getParcelable("creatureP1");
+
+                    if (creature != null) {
+                        P1StatsCreatureName.setText(creature.getName());
+                        P1HP.setText(String.valueOf(creature.getEnergy()));
+                        P1ST.setText(String.valueOf(creature.getStrike()));
+                        P1DF.setText(String.valueOf(creature.getDefense()));
+
+                        String mDrawableName = creature.getImageName();
+                        int resID = getResources().getIdentifier(mDrawableName, "drawable", getApplicationContext().getPackageName());
+
+                        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                                resID);
+                        P1Image.setImageBitmap(bitmap);
+
+                        P1creatures.add(creature);
+
+                        // TOOD: inserer en db le match courant ?
+                        Toast.makeText(this, "Début du combat", Toast.LENGTH_LONG).show();
+
+                        // TODO: make it work
+//                        battle = new Battle(P1creatures, P2creatures, this);
+                    }
+                } else {
+                    LoadPreferences();
+                    Toast.makeText(this, "Reprise du combat", Toast.LENGTH_LONG).show();
+                }
 
                 break;
             case PLAYER2:
-                P2StatsCreatureName.setText(battle.getPlayerCreatureName(Player.PLAYER2));
-                P2Name.setText(battle.getPlayerCreatureName(Player.PLAYER2));
-                P2HP.setText(Integer.toString(battle.getBattleState().getPlayer2CurrentCreature().getEnergy()));
-                P2ST.setText(Integer.toString(battle.getBattleState().getPlayer2CurrentCreature().getStrike()));
-                P2DF.setText(Integer.toString(battle.getBattleState().getPlayer2CurrentCreature().getDefense()));
+                enemy = databaseAdapter.getEnemy();
+                // Load P2
+                if (enemy != null) {
+                    P2StatsCreatureName.setText(enemy.getName());
+                    P2HP.setText(String.valueOf(enemy.getEnergy()));
+                    P2ST.setText(String.valueOf(enemy.getStrike()));
+                    P2DF.setText(String.valueOf(enemy.getDefense()));
 
-                mDrawableN = battle.getBattleState().getPlayer2CurrentCreature().getImageName();
-                resI = getResources().getIdentifier(mDrawableN, "drawable", getApplicationContext().getPackageName());
+                    mDrawableN = enemy.getImageName();
+                    resI = getResources().getIdentifier(mDrawableN, "drawable", getApplicationContext().getPackageName());
 
-                bitma = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                        resI);
-                P2Image.setImageBitmap(bitma);
+                    bitma = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                            resI);
+                    P2Image.setImageBitmap(bitma);
 
+                    P2creatures.add(enemy);
+                } else {
+                    LoadPreferences();
+                }
                 break;
         }
     }
