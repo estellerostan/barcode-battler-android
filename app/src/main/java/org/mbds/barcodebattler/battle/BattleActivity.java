@@ -57,24 +57,26 @@ public class BattleActivity extends AppCompatActivity {
         gameMsg = (TextView) findViewById(R.id.game_msg);
 
 //        List<Creature> creaturesP1 = new ArrayList<Creature>();
-        ICreature creature = getIntent().getExtras().getParcelable("creatureP1");
+        if (getIntent().getExtras() != null) {
+            ICreature creature = getIntent().getExtras().getParcelable("creatureP1");
 
-        if (creature != null) {
-            P1StatsCreatureName.setText(creature.getName());
-            P1HP.setText(String.valueOf(creature.getEnergy()));
-            P1ST.setText(String.valueOf(creature.getStrike()));
-            P1DF.setText(String.valueOf(creature.getDefense()));
+            if (creature != null) {
+                P1StatsCreatureName.setText(creature.getName());
+                P1HP.setText(String.valueOf(creature.getEnergy()));
+                P1ST.setText(String.valueOf(creature.getStrike()));
+                P1DF.setText(String.valueOf(creature.getDefense()));
 
-            String mDrawableName = creature.getImageName();
-            int resID = getResources().getIdentifier(mDrawableName, "drawable", getApplicationContext().getPackageName());
+                String mDrawableName = creature.getImageName();
+                int resID = getResources().getIdentifier(mDrawableName, "drawable", getApplicationContext().getPackageName());
 
-            Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                    resID);
-            P1Image.setImageBitmap(bitmap);
+                Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                        resID);
+                P1Image.setImageBitmap(bitmap);
 
-            // TOOD: inserer en db le match courant ?
+                // TOOD: inserer en db le match courant ?
 
-            Toast.makeText(this, "Début du combat", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Début du combat", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }
