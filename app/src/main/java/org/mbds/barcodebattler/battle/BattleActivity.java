@@ -209,6 +209,11 @@ public class BattleActivity extends AppCompatActivity {
     }
 
     public void setPlayerCreature(Player player) {
+
+        String mDrawableN;
+        int resI;
+        Bitmap bitma;
+
         switch (player) {
             case PLAYER1:
                 P1StatsCreatureName.setText(battle.getPlayerCreatureName(Player.PLAYER1));
@@ -217,6 +222,11 @@ public class BattleActivity extends AppCompatActivity {
                 P1ST.setText(Integer.toString(battle.getBattleState().getPlayer1CurrentCreature().getStrike()));
                 P1DF.setText(Integer.toString(battle.getBattleState().getPlayer1CurrentCreature().getDefense()));
                 // TODO : les images
+                mDrawableN= battle.getBattleState().getPlayer1CurrentCreature().getImageName();
+                resI = getResources().getIdentifier(mDrawableN, "drawable", getApplicationContext().getPackageName());
+                bitma = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                        resI);
+                P1Image.setImageBitmap(bitma);
 
                 break;
             case PLAYER2:
@@ -225,6 +235,14 @@ public class BattleActivity extends AppCompatActivity {
                 P2HP.setText(Integer.toString(battle.getBattleState().getPlayer2CurrentCreature().getEnergy()));
                 P2ST.setText(Integer.toString(battle.getBattleState().getPlayer2CurrentCreature().getStrike()));
                 P2DF.setText(Integer.toString(battle.getBattleState().getPlayer2CurrentCreature().getDefense()));
+
+                mDrawableN = battle.getBattleState().getPlayer2CurrentCreature().getImageName();
+                resI = getResources().getIdentifier(mDrawableN, "drawable", getApplicationContext().getPackageName());
+
+                bitma = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                        resI);
+                P2Image.setImageBitmap(bitma);
+
                 break;
         }
     }
