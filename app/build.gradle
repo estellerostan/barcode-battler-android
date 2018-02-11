@@ -48,4 +48,6 @@ dependencies {
     // Add Dagger dependencies
     compile 'com.google.dagger:dagger:2.14.1'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
+    // pour le barcode
+    compile 'com.google.android.gms:play-services:7.8+'
 }

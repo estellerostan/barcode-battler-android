@@ -40,6 +40,8 @@
     <string name="btn_summon_next">Summon next creature</string>
     <string name="btn_start">Start battle !</string>
     <string name="btn_quit">Quit</string>
+    <!-- Superhero Activity -->
+    <string name="add_to_battle">Combattre</string>
 
 
 </resources>

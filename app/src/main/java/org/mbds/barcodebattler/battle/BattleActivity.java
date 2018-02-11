@@ -1,13 +1,18 @@
 package org.mbds.barcodebattler.battle;
 
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.mbds.barcodebattler.R;
 import org.mbds.barcodebattler.data.Creature;
@@ -15,6 +20,8 @@ import org.mbds.barcodebattler.data.ICreature;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.mbds.barcodebattler.util.BarcodeBattlerDatabaseAdapter;
 
 public class BattleActivity extends AppCompatActivity {
 
@@ -43,6 +50,8 @@ public class BattleActivity extends AppCompatActivity {
     //TextView gameMsg;
     EditText gameMsg;
 
+    ICreature creature;
+    ICreature enemy;
     Button buttonTurn;
 
     Battle battle;
@@ -55,18 +64,18 @@ public class BattleActivity extends AppCompatActivity {
 
 
         List<ICreature> P1creatures = new ArrayList<ICreature>();
-        ICreature s1 = new Creature("Beast Feast", 40, 500, 100, "beast_feast");
-        ICreature s3 = new Creature("Jam Bam", 1000, 250, 350, "jam_bam");
-        P1creatures.add(s1);
-        P1creatures.add(s3);
+        //ICreature s1 = new Creature("Beast Feast", 40, 500, 100, "beast_feast");
+        //ICreature s3 = new Creature("Jam Bam", 1000, 250, 350, "jam_bam");
+        //P1creatures.add(s1);
+        //P1creatures.add(s3);
 
         List<ICreature> P2creatures = new ArrayList<ICreature>();
-        ICreature s2 = new Creature("Cool Candy", 550, 400, 200, "cool_candy");
-        ICreature s6 = new Creature("Razor Fist", 1000, 450, 300, "razor_fist");
-        P2creatures.add(s2);
-        P2creatures.add(s6);
+        //ICreature s2 = new Creature("Cool Candy", 550, 400, 200, "cool_candy");
+        //ICreature s6 = new Creature("Razor Fist", 1000, 450, 300, "razor_fist");
+        //P2creatures.add(s2);
+        //P2creatures.add(s6);
 
-        battle = new Battle(P1creatures, P2creatures, this);
+        //battle = new Battle(P1creatures, P2creatures, this);
 
 
         P1StatsCreatureName = (TextView) findViewById(R.id.monsterInfoP1);
@@ -87,6 +96,65 @@ public class BattleActivity extends AppCompatActivity {
 
         gameMsg = (EditText) findViewById(R.id.game_msg);
         gameMsg.setEnabled(false);
+
+        // TODO: a deplacer + sauvegarde du monstre choisit au debut du combat
+        BarcodeBattlerDatabaseAdapter databaseAdapter = new BarcodeBattlerDatabaseAdapter(getApplicationContext());
+        databaseAdapter.open();
+
+        enemy = databaseAdapter.getEnemy();
+        // Load P2
+        if (enemy != null) {
+            P2StatsCreatureName.setText(enemy.getName());
+            P2HP.setText(String.valueOf(enemy.getEnergy()));
+            P2ST.setText(String.valueOf(enemy.getStrike()));
+            P2DF.setText(String.valueOf(enemy.getDefense()));
+
+            String mDrawableN = enemy.getImageName();
+            int resI = getResources().getIdentifier(mDrawableN, "drawable", getApplicationContext().getPackageName());
+
+            Bitmap bitma = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                    resI);
+            P2Image.setImageBitmap(bitma);
+        } else {
+            LoadPreferences();
+        }
+
+        // Load P! from various sources
+        if (getIntent().getExtras() != null) {
+            creature = getIntent().getExtras().getParcelable("creatureP1");
+
+            if (creature != null) {
+                P1StatsCreatureName.setText(creature.getName());
+                P1HP.setText(String.valueOf(creature.getEnergy()));
+                P1ST.setText(String.valueOf(creature.getStrike()));
+                P1DF.setText(String.valueOf(creature.getDefense()));
+
+                String mDrawableName = creature.getImageName();
+                int resID = getResources().getIdentifier(mDrawableName, "drawable", getApplicationContext().getPackageName());
+
+                Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                        resID);
+                P1Image.setImageBitmap(bitmap);
+
+                // TOOD: inserer en db le match courant ?
+                Toast.makeText(this, "Début du combat", Toast.LENGTH_LONG).show();
+            }
+        } else if (savedInstanceState != null) {
+            P1StatsCreatureName.setText(savedInstanceState.getString("hero_name"));
+            P1HP.setText(savedInstanceState.getInt("hero_energy"));
+            P1ST.setText(savedInstanceState.getInt("hero_strike"));
+            P1DF.setText(savedInstanceState.getInt("hero_defense"));
+            String mDrawableName = savedInstanceState.getString("hero_imageName");
+            int resID = getResources().getIdentifier(mDrawableName, "drawable", getApplicationContext().getPackageName());
+
+            Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                    resID);
+            P1Image.setImageBitmap(bitmap);
+            Toast.makeText(this, "Reprise du combat", Toast.LENGTH_LONG).show();
+        } else {
+            LoadPreferences();
+            Toast.makeText(this, "Reprise du combat", Toast.LENGTH_LONG).show();
+        }
 
         buttonTurn = (Button) findViewById(R.id.btn_turn);
         buttonTurn.setText(R.string.btn_start);
@@ -109,7 +177,6 @@ public class BattleActivity extends AppCompatActivity {
                         if ( battle.isTurnEnded() ) {
                             Log.d(TAG, "Current P1 turn ended");
                             battle.nextTurn();
-
                         } else {
                             Log.d(TAG, "Current P1 turn");
                             battle.playTurn(Player.PLAYER1);
@@ -159,5 +226,74 @@ public class BattleActivity extends AppCompatActivity {
 
     public Button getButtonTurn() {
         return buttonTurn;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+        if (creature != null) {
+            savedInstanceState.putString("name", creature.getName());
+            savedInstanceState.putInt("energy", creature.getEnergy());
+            savedInstanceState.putInt("strike", creature.getStrike());
+            savedInstanceState.putInt("defense", creature.getDefense());
+            savedInstanceState.putString("imageName", creature.getImageName());
+        }
+    }
+
+    private void SavePreferences() {
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor creatures = sharedPreferences.edit();
+        creatures.putString("hero_name", this.creature.getName());
+        creatures.putInt("hero_energy", this.creature.getEnergy());
+        creatures.putInt("hero_strike", this.creature.getStrike());
+        creatures.putInt("hero_defense", this.creature.getDefense());
+        creatures.putString("hero_imageName", this.creature.getImageName());
+
+        creatures.putString("enemy_name", this.enemy.getName());
+        creatures.putInt("enemy_energy", this.enemy.getEnergy());
+        creatures.putInt("enemy_strike", this.enemy.getStrike());
+        creatures.putInt("enemy_defense", this.enemy.getDefense());
+        creatures.putString("enemy_imageName", this.enemy.getImageName());
+        creatures.apply();
+    }
+
+    private void LoadPreferences() {
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        if (sharedPreferences.getString("hero_name", null) != null) {
+            P1StatsCreatureName.setText(sharedPreferences.getString("hero_name", null));
+            P1HP.setText(String.valueOf(sharedPreferences.getInt("hero_energy", 0)));
+            P1ST.setText(String.valueOf(sharedPreferences.getInt("hero_strike", 0)));
+            P1DF.setText(String.valueOf(sharedPreferences.getInt("hero_defense", 0)));
+            String mDrawableName = sharedPreferences.getString("hero_imageName", null);
+            int resID = getResources().getIdentifier(mDrawableName, "drawable", getApplicationContext().getPackageName());
+
+            Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                    resID);
+            P1Image.setImageBitmap(bitmap);
+        }
+
+        if (sharedPreferences.getString("enemy_name", null) != null) {
+            P2StatsCreatureName.setText(sharedPreferences.getString("enemy_name", null));
+            P2HP.setText(String.valueOf(sharedPreferences.getInt("enemy_energy", 0)));
+            P2ST.setText(String.valueOf(sharedPreferences.getInt("enemy_strike", 0)));
+            P2DF.setText(String.valueOf(sharedPreferences.getInt("enemy_defense", 0)));
+            String name = sharedPreferences.getString("enemy_imageName", null);
+            int res = getResources().getIdentifier(name, "drawable", getApplicationContext().getPackageName());
+
+            Bitmap abitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                    res);
+            P2Image.setImageBitmap(abitmap);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (creature != null) {
+            SavePreferences();
+        }
+        super.onBackPressed();
     }
 }

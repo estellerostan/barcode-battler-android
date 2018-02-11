@@ -6,6 +6,14 @@ import dagger.Module;
 
 @Module
 public interface ICreature extends Parcelable {
+    int getId();
+
+    void setId(int id);
+
+    String getBarcode();
+
+    void setBarcode(String barcode);
+
     String getName();
 
     void setName(String name);
@@ -25,4 +33,8 @@ public interface ICreature extends Parcelable {
     String getImageName();
 
     void setImageName(String imageName);
+
+    String getType();
+
+    void setType(String type);
 }
