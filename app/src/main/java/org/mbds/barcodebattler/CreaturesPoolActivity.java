@@ -2,20 +2,31 @@ package org.mbds.barcodebattler;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
+
+import org.mbds.barcodebattler.data.Creature;
+import org.mbds.barcodebattler.data.ICreature;
 import org.mbds.barcodebattler.util.BarcodeBattlerDatabaseAdapter;
+import org.mbds.barcodebattler.util.BarcodeToCreatureConverter;
 import org.mbds.barcodebattler.util.BaseActivity;
 import org.mbds.barcodebattler.util.CreaturesPoolAdapter;
 
 public class CreaturesPoolActivity extends BaseActivity {
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
     //This flag is required to avoid first time onResume refreshing
     static boolean loaded = false;
     private ListView creaturesPool;
@@ -40,6 +51,10 @@ public class CreaturesPoolActivity extends BaseActivity {
 
         if (!data.isEmpty()) {
             customAdapter = new CreaturesPoolAdapter(this, R.layout.activity_creatures_pool, data.getSuperheroes());
+            customAdapter.clear();
+            data.setSuperheroes(databaseAdapter.getCreatures());
+            customAdapter.addAll(data.getSuperheroes());
+            customAdapter.notifyDataSetChanged();
             creaturesPool.setAdapter(customAdapter);
         }
 
@@ -91,8 +106,56 @@ public class CreaturesPoolActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 // TODO: Ajouter une créature ou un équippement en scannant un code barre #1
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            BarcodeDetector detector =
+                    new BarcodeDetector.Builder(getApplicationContext())
+//                                .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE)
+                            .build();
+//                if(!detector.isOperational()){
+//                    txtView.setTe2xt("Could not set up the detector!");
+//                    return;
+//                }
+
+            Frame frame = new Frame.Builder().setBitmap(imageBitmap).build();
+            SparseArray<Barcode> barcodes = detector.detect(frame);
+
+            String thisCode = barcodes.valueAt(0).rawValue;
+//          System.out.println( "--------------------------------------------------------------------------- barcode de l'item ajoute : "+ thisCode);
+            ICreature creature = new Creature(thisCode, "**Custom**", 1, 1, 1, "blank");
+            BarcodeToCreatureConverter converter = new BarcodeToCreatureConverter(creature);
+            creature = converter.convert(thisCode);
+
+            if (databaseAdapter.getCreature(creature.getBarcode()).getBarcode() == null) { // Les créatures ne peuvent etre ajoutées qu'une seule fois
+                databaseAdapter.insertCreature(
+                        creature.getBarcode(),
+                        creature.getName(),
+                        creature.getEnergy(),
+                        creature.getStrike(),
+                        creature.getDefense(),
+                        creature.getImageName()
+                );
+                ICreature addedCreature = databaseAdapter.getCreature(creature.getBarcode());
+                // TODO : ajouter un nom different
+//                databaseAdapter.updateCreature(addedCreature.getId(), "Barcode challenger " + addedCreature.getId());
+
+                customAdapter.add(addedCreature);
+                customAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override

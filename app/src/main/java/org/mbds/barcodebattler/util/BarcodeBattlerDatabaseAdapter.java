@@ -63,6 +63,14 @@ public class BarcodeBattlerDatabaseAdapter {
         }
     }
 
+    public void updateCreature(int id, String name) {
+        ContentValues cv = new ContentValues();
+        cv.put(BarcodeBattlerOpenHelper.CREATURE_NAME, name);
+
+        db = dbHelper.getWritableDatabase();
+        db.update(BarcodeBattlerOpenHelper.CREATURE_TABLE_NAME, cv, "_id=" + id, null);
+    }
+
     public int deleteCreature(int position) {
         String table = BarcodeBattlerOpenHelper.CREATURE_TABLE_NAME;
         String whereClause = String.format("%s%n =?", BarcodeBattlerOpenHelper.CREATURE_ID);

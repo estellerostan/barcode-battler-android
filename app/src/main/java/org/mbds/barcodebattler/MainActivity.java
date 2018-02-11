@@ -9,7 +9,6 @@ import android.widget.Button;
 import org.mbds.barcodebattler.battle.BattleActivity;
 import org.mbds.barcodebattler.data.ICreature;
 import org.mbds.barcodebattler.util.BarcodeBattlerDatabaseAdapter;
-import org.mbds.barcodebattler.util.CreaturesPoolAdapter;
 
 import java.util.ArrayList;
 
@@ -91,11 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedCreatures != null) {
             data.setSuperheroes(savedCreatures);
-        }
-
-        if (!data.isEmpty()) {
-            CreaturesPoolAdapter customAdapter = new CreaturesPoolAdapter(this, R.layout.activity_creatures_pool, data.getSuperheroes());
-        } else { // TODO: ?
         }
     }
 }
