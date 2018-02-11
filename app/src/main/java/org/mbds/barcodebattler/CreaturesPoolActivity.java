@@ -11,11 +11,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.mbds.barcodebattler.data.ICreature;
 import org.mbds.barcodebattler.util.BarcodeBattlerDatabaseAdapter;
 import org.mbds.barcodebattler.util.BaseActivity;
-
-import java.util.ArrayList;
+import org.mbds.barcodebattler.util.CreaturesPoolAdapter;
 
 public class CreaturesPoolActivity extends BaseActivity {
     //This flag is required to avoid first time onResume refreshing
@@ -23,7 +21,7 @@ public class CreaturesPoolActivity extends BaseActivity {
     private ListView creaturesPool;
     private Data data;
     private BarcodeBattlerDatabaseAdapter databaseAdapter;
-    private ArrayList<ICreature> superheroes;
+    private CreaturesPoolAdapter customAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,40 +36,11 @@ public class CreaturesPoolActivity extends BaseActivity {
 
         data = new Data();
 
-//        getApplicationContext().deleteDatabase("database.db"); // DEBUG
-
-        superheroes = data.getSuperheroes();
-        databaseAdapter = new BarcodeBattlerDatabaseAdapter(getApplicationContext());
-        databaseAdapter.open();
-
-        int i = 0;
-        for (ICreature superhero : superheroes
-                ) {
-
-            if (databaseAdapter.getCreature(superhero.getBarcode()) == null) {
-                databaseAdapter.insertCreature(
-                        superhero.getBarcode(),
-                        superhero.getName(),
-                        superhero.getEnergy(),
-                        superhero.getStrike(),
-                        superhero.getDefense(),
-                        superhero.getImageName()
-                );
-            }
-        }
-
-        ArrayList<ICreature> savedCreatures = databaseAdapter.getCreatures();
-
         creaturesPool = (ListView) findViewById(R.id.creaturesPool);
-        creaturesPool.invalidateViews();
-
-        if (savedCreatures != null) {
-            data.setSuperheroes(savedCreatures);
-        }
 
         if (!data.isEmpty()) {
-            creaturesPool.setAdapter(data);
-        } else { // TODO: ?
+            customAdapter = new CreaturesPoolAdapter(this, R.layout.activity_creatures_pool, data.getSuperheroes());
+            creaturesPool.setAdapter(customAdapter);
         }
 
         creaturesPool.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -96,9 +65,12 @@ public class CreaturesPoolActivity extends BaseActivity {
                         .setMessage("Êtes-vous sûr de vouloir supprimer " + data.getSuperheroes().get(position).getName() + " ?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                data.getSuperheroes().remove(position);
-                                creaturesPool.invalidateViews();
-                                int res = databaseAdapter.deleteCreature(position);
+
+                                final int id = databaseAdapter.getCreature(data.getSuperheroes().get(position).getBarcode()).getId();
+                                customAdapter.remove(customAdapter.getItem(position));
+                                customAdapter.notifyDataSetInvalidated();
+                                int res = databaseAdapter.deleteCreature(id);
+//                                System.out.println( "--------------------------------------------------------------------------- id de l'item a supprimer : "+ id); // debug
                                 Toast.makeText(getApplicationContext(), "Suppression de " + res + " créature", Toast.LENGTH_SHORT).show();
                             }
                         })
@@ -123,21 +95,33 @@ public class CreaturesPoolActivity extends BaseActivity {
         });
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-//        if (!loaded) {
-//            //First time just set the loaded flag true
-//            loaded = true;
-//        } else {
-//
-//            //Reload data
-//            data.setSuperheroes(databaseAdapter.getCreatures());
-//
-//            // TODO:
-//            adapter.notifyDatasetChanged();
-//        }
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        if (!loaded) {
+            //First time just set the loaded flag true
+            loaded = true;
+        } else {
+
+            //Reload data
+            refresh();
+        }
+    }
+
+    private void refresh() {
+        customAdapter.clear();
+        data.setSuperheroes(databaseAdapter.getCreatures());
+        customAdapter.addAll(data.getSuperheroes());
+        customAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        int selection = creaturesPool.getSelectedItemPosition();
+        customAdapter.notifyDataSetChanged();
+        creaturesPool.setSelection(selection);
+    }
 }

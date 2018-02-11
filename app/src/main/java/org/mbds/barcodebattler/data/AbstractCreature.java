@@ -3,6 +3,7 @@ package org.mbds.barcodebattler.data;
 import android.os.Parcel;
 
 abstract class AbstractCreature implements ICreature {
+    private int id;
     private String barcode;
     private String name;
     private int energy;
@@ -44,6 +45,14 @@ abstract class AbstractCreature implements ICreature {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeStringArray(new String[]{barcode, name, String.valueOf(getEnergy()), String.valueOf(getStrike()), String.valueOf(getDefense()), imageName});
+    }
+
+    public final int getId() {
+        return id;
+    }
+
+    public final void setId(int id) {
+        this.id = id;
     }
 
     public final String getBarcode() {
