@@ -23,15 +23,23 @@
     <string name="label_equipment">- EQUIPMENT -</string>
     <string name="action_attack">Attack</string>
     <string name="action_use">Use item</string>
-    <string name="msg_damage">Your attack caused %1$d damages...</string>
+    <string name="msg_damage">%1$s attack caused %2$d damages...</string>
     <string name="msg_turn">* %1$s TURN *</string>
     <string name="msg_equipement">You used %1$s on %2$s...</string>
     <string name="msg_death">Monster %1$s HP reached 0... </string>
     <string name="msg_lose">You lose !</string>
-    <string name="msg_win">Opponent\'s monster died ! It\'s your WIN !</string>
+    <string name="msg_win">%1$s\'s monster died ! It\'s %2$s\'s WIN !</string>
+    <string name="msg_battle_winner">%1$s WIN THE BATTLE</string>
+    <string name="msg_summon">You have lost your creature, another monster is summoned</string>
+    <string name="msg_s">New Creature summoned</string>
 
 
-
+    <string name="btn_turn">Attack !</string>
+    <string name="btn_your_turn">Your Turn</string>
+    <string name="btn_end_turn">End Turn</string>
+    <string name="btn_summon_next">Summon next creature</string>
+    <string name="btn_start">Start battle !</string>
+    <string name="btn_quit">Quit</string>
 
 
 </resources>

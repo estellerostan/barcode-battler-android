@@ -4,6 +4,11 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="black">#000</color>
+    <color name="btn_turn">#499748</color>
+    <color name="message_tab">#547b53</color>
+    <color name="btn_turn_off">#8b8b8b</color>
+    <color name="btn_summon">#f7ab14</color>
+    <color name="white">#FFF</color>
 
     <!--Player color code-->
 

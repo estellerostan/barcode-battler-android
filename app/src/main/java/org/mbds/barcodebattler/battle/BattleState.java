@@ -1,8 +1,13 @@
 package org.mbds.barcodebattler.battle;
 
-import org.mbds.barcodebattler.data.Creature;
+import android.util.Log;
+
+import org.mbds.barcodebattler.data.ICreature;
 
 import java.util.List;
+
+import static org.mbds.barcodebattler.battle.Player.PLAYER1;
+import static org.mbds.barcodebattler.battle.Player.PLAYER2;
 
 /**
  * Created by michael on 10/02/2018.
@@ -10,49 +15,102 @@ import java.util.List;
 
 public class BattleState {
 
-    private List<Creature> player1Creatures;
-    private List<Creature> player2Creatures;
+    private static final String TAG = BattleState.class.getSimpleName();
 
-    private Creature player1CurrentCreature;
-    private Creature player2CurrentCreature;
+    private List<ICreature> player1Creatures;
+    private List<ICreature> player2Creatures;
+
+    private ICreature player1CurrentCreature;
+    private ICreature player2CurrentCreature;
 
     private Player playerTurn;
 
-    public BattleState(List<Creature> player1Creatures, List<Creature> player2Creatures) {
+    public BattleState(List<ICreature> player1Creatures, List<ICreature> player2Creatures) {
         this.player1Creatures = player1Creatures;
         this.player2Creatures = player2Creatures;
 
         this.player1CurrentCreature = player1Creatures.remove(0);
         this.player2CurrentCreature = player2Creatures.remove(0);
 
-        playerTurn = Player.PLAYER1;
+        playerTurn = Player.NONE;
     }
 
-    public BattleState(List<Creature> player1Creatures, List<Creature> player2Creatures, Creature player1CurrentCreature, Creature player2CurrentCreature) {
+    public BattleState(List<ICreature> player1Creatures, List<ICreature> player2Creatures, ICreature player1CurrentCreature, ICreature player2CurrentCreature) {
         this.player1Creatures = player1Creatures;
         this.player2Creatures = player2Creatures;
         this.player1CurrentCreature = player1CurrentCreature;
         this.player2CurrentCreature = player2CurrentCreature;
+
+        playerTurn = PLAYER1;
     }
 
-    // Change la creature du joueur
+    // > Debute la 1er battle
+    public void startTurn() {
+            playerTurn = PLAYER1;
+            Log.d(TAG, "[game] Start turn");
+    }
+
+    // > Changement de tour par rapport au tour actuel
+    public void changeTurn() {
+        switch (playerTurn) {
+            case PLAYER1:
+                playerTurn = PLAYER2;
+                break;
+            case PLAYER2:
+                playerTurn = PLAYER1;
+                break;
+        }
+    }
+
+
+
+    //> Change la creature du joueur
     public void changeCreature(Player player) {
 
         switch (player) {
             case PLAYER1:
-                player1CurrentCreature = player1Creatures.iterator().next();
-                player1Creatures.iterator().remove();
+                Log.d(TAG, "[game] P1 summon monster");
+                player1CurrentCreature = player1Creatures.remove(0);
                 break;
             case PLAYER2:
-                player2CurrentCreature = player2Creatures.iterator().next();
-                player2Creatures.iterator().remove();
+                Log.d(TAG, "[game] P2 summon monster");
+                player2CurrentCreature = player2Creatures.remove(0);
                 break;
             default:
         }
     }
 
-    // Vérifie si un joueur à encore des créatures
+    // > Signale la fin d'une battle
+    public void battleEnd() {
+        playerTurn = Player.NONE;
+    }
+
+    // > Creature du joueur indiqué mort ?
+    public boolean creaturehasDied(Player player) {
+        switch (player) {
+            case PLAYER1:
+                return!( player1CurrentCreature.getEnergy() > 0);
+            case PLAYER2:
+                return !(player2CurrentCreature.getEnergy() > 0);
+            default:
+                return false;
+        }
+    }
+
+    // > Vérifie si un joueur à encore des créatures en état de combattre
     public boolean hasRemainingCreature(Player player) {
+        switch (player) {
+            case PLAYER1:
+                return (player1Creatures.iterator().hasNext() || player1CurrentCreature.getEnergy() > 0);
+            case PLAYER2:
+                return (player2Creatures.iterator().hasNext() || player2CurrentCreature.getEnergy() > 0);
+            default:
+                return false;
+        }
+    }
+
+    // > Vérifie si le joueur a d'autre creature
+    public boolean hasOtherCreature(Player player) {
         switch (player) {
             case PLAYER1:
                 return player1Creatures.iterator().hasNext();
@@ -63,7 +121,7 @@ public class BattleState {
         }
     }
 
-    // Retourne si le monstre meure à la suite de l'application de ces dommages
+    // > Retourne si le monstre meure à la suite de l'application de ces dommages
     public boolean canDieFromDamage(Player targetedPlayer, int dmg) {
 
         boolean canDie = true;
@@ -79,7 +137,7 @@ public class BattleState {
         return canDie;
     }
 
-    // Affecte les dommages d'une attaque au monstre
+    // > Affecte les dommages d'une attaque au monstre
     public void applyDamage(Player targetedPlayer, int dmg) {
 
         switch (targetedPlayer) {
@@ -93,35 +151,43 @@ public class BattleState {
     }
 
 
-    public List<Creature> getPlayer1Creatures() {
+
+    // GETTERS AND SETTERS
+
+
+    public List<ICreature> getPlayer1Creatures() {
         return player1Creatures;
     }
 
-    public void setPlayer1Creatures(List<Creature> player1Creatures) {
+    public void setPlayer1Creatures(List<ICreature> player1Creatures) {
         this.player1Creatures = player1Creatures;
     }
 
-    public List<Creature> getPlayer2Creatures() {
+    public List<ICreature> getPlayer2Creatures() {
         return player2Creatures;
     }
 
-    public void setPlayer2Creatures(List<Creature> player2Creatures) {
+    public void setPlayer2Creatures(List<ICreature> player2Creatures) {
         this.player2Creatures = player2Creatures;
     }
 
-    public Creature getPlayer1CurrentCreature() {
+    public ICreature getPlayer1CurrentCreature() {
         return player1CurrentCreature;
     }
 
-    public void setPlayer1CurrentCreature(Creature player1CurrentCreature) {
+    public void setPlayer1CurrentCreature(ICreature player1CurrentCreature) {
         this.player1CurrentCreature = player1CurrentCreature;
     }
 
-    public Creature getPlayer2CurrentCreature() {
+    public ICreature getPlayer2CurrentCreature() {
         return player2CurrentCreature;
     }
 
-    public void setPlayer2CurrentCreature(Creature player2CurrentCreature) {
+    public void setPlayer2CurrentCreature(ICreature player2CurrentCreature) {
         this.player2CurrentCreature = player2CurrentCreature;
+    }
+
+    public Player getPlayerTurn() {
+        return playerTurn;
     }
 }
