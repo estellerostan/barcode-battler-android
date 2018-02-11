@@ -1,5 +1,6 @@
 package org.mbds.barcodebattler.battle;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -34,7 +35,7 @@ public class BattleActivity extends AppCompatActivity {
     TextView gameMsg;
 
     BattleState battle;
-
+    ICreature creature;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class BattleActivity extends AppCompatActivity {
 
 //        List<Creature> creaturesP1 = new ArrayList<Creature>();
         if (getIntent().getExtras() != null) {
-            ICreature creature = getIntent().getExtras().getParcelable("creatureP1");
+            creature = getIntent().getExtras().getParcelable("creatureP1");
 
             if (creature != null) {
                 P1StatsCreatureName.setText(creature.getName());
@@ -74,9 +75,72 @@ public class BattleActivity extends AppCompatActivity {
                 P1Image.setImageBitmap(bitmap);
 
                 // TOOD: inserer en db le match courant ?
-
                 Toast.makeText(this, "Début du combat", Toast.LENGTH_LONG).show();
             }
+        } else if (savedInstanceState != null) {
+            P1StatsCreatureName.setText(savedInstanceState.getString("name"));
+            P1HP.setText(savedInstanceState.getInt("energy"));
+            P1ST.setText(savedInstanceState.getInt("strike"));
+            P1DF.setText(savedInstanceState.getInt("defense"));
+            String mDrawableName = savedInstanceState.getString("imageName");
+            int resID = getResources().getIdentifier(mDrawableName, "drawable", getApplicationContext().getPackageName());
+
+            Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                    resID);
+            P1Image.setImageBitmap(bitmap);
+            Toast.makeText(this, "Reprise du combat", Toast.LENGTH_LONG).show();
+        } else {
+            LoadPreferences();
+            Toast.makeText(this, "Reprise du combat", Toast.LENGTH_LONG).show();
         }
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+        if (creature != null) {
+            savedInstanceState.putString("name", creature.getName());
+            savedInstanceState.putInt("energy", creature.getEnergy());
+            savedInstanceState.putInt("strike", creature.getStrike());
+            savedInstanceState.putInt("defense", creature.getDefense());
+            savedInstanceState.putString("imageName", creature.getImageName());
+        }
+    }
+
+    private void SavePreferences() {
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor creature = sharedPreferences.edit();
+        creature.putString("name", this.creature.getName());
+        creature.putInt("energy", this.creature.getEnergy());
+        creature.putInt("strike", this.creature.getStrike());
+        creature.putInt("defense", this.creature.getDefense());
+        creature.putString("imageName", this.creature.getImageName());
+        creature.apply();   // I missed to save the data to preference here,.
+    }
+
+    private void LoadPreferences() {
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        P1StatsCreatureName.setText(sharedPreferences.getString("name", null));
+        P1HP.setText(String.valueOf(sharedPreferences.getInt("energy", 0)));
+        P1ST.setText(String.valueOf(sharedPreferences.getInt("strike", 0)));
+        P1DF.setText(String.valueOf(sharedPreferences.getInt("defense", 0)));
+        String mDrawableName = sharedPreferences.getString("imageName", null);
+        int resID = getResources().getIdentifier(mDrawableName, "drawable", getApplicationContext().getPackageName());
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                resID);
+        P1Image.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (creature != null) {
+            SavePreferences();
+        }
+        super.onBackPressed();
     }
 }
