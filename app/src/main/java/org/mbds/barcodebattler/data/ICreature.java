@@ -33,4 +33,8 @@ public interface ICreature extends Parcelable {
     String getImageName();
 
     void setImageName(String imageName);
+
+    String getType();
+
+    void setType(String type);
 }

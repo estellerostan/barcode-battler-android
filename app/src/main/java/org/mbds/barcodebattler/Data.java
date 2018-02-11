@@ -16,11 +16,15 @@ import org.mbds.barcodebattler.data.ICreature;
 import org.mbds.barcodebattler.util.BarcodeToCreatureConverter;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 class Data implements ListAdapter {
     private ArrayList<ICreature> superheroes;
+    private ArrayList<ICreature> enemies;
 
     Data() {
+        final String superheroType = "SUPERHERO";
+
         superheroes = new ArrayList<>();
 
         String barcode1 = "340912373503";
@@ -30,12 +34,12 @@ class Data implements ListAdapter {
         String barcode5 = "391110346509";
         String barcode6 = "320813183500";
 
-        ICreature s1 = new Creature(barcode1, "Beast Feast", 1, 1, 1, "beast_feast");
-        ICreature s2 = new Creature(barcode2, "Cool Candy", 1, 2, 2, "cool_candy");
-        ICreature s3 = new Creature(barcode3, "Jam Bam", 1, 2, 3, "jam_bam");
-        ICreature s4 = new Creature(barcode4, "Jaw Breaker", 1, 2, 3, "jaw_breaker");
-        ICreature s5 = new Creature(barcode5, "Mega Blaster", 1, 2, 3, "mega_blaster");
-        ICreature s6 = new Creature(barcode6, "Razor Fist", 1, 2, 3, "razor_fist");
+        ICreature s1 = new Creature(barcode1, "Beast Feast", 1, 1, 1, "beast_feast", superheroType);
+        ICreature s2 = new Creature(barcode2, "Cool Candy", 1, 2, 2, "cool_candy", superheroType);
+        ICreature s3 = new Creature(barcode3, "Jam Bam", 1, 2, 3, "jam_bam", superheroType);
+        ICreature s4 = new Creature(barcode4, "Jaw Breaker", 1, 2, 3, "jaw_breaker", superheroType);
+        ICreature s5 = new Creature(barcode5, "Mega Blaster", 1, 2, 3, "mega_blaster", superheroType);
+        ICreature s6 = new Creature(barcode6, "Razor Fist", 1, 2, 3, "razor_fist", superheroType);
 
         BarcodeToCreatureConverter converter = new BarcodeToCreatureConverter(s1);
         s1 = converter.convert(barcode1);
@@ -61,6 +65,23 @@ class Data implements ListAdapter {
         superheroes.add(s4);
         superheroes.add(s5);
         superheroes.add(s6);
+
+        enemies = new ArrayList<>();
+
+        for (int i = 0; i < 5; i++) {
+            // nextInt is normally exclusive of the top value,
+            // so add 1 to make it inclusive
+            int randomNum = ThreadLocalRandom.current().nextInt(0, 100 + 1);
+
+            String barcode = String.valueOf(randomNum) + String.valueOf(i) + "3";
+
+            ICreature enemy = new Creature(barcode, "Enemy " + i, 1, 1, 1, "blank", "ENEMY");
+
+            converter = new BarcodeToCreatureConverter(enemy);
+            enemy = converter.convert(barcode);
+
+            enemies.add(enemy);
+        }
     }
 
     public static int calculateInSampleSize(
@@ -205,5 +226,13 @@ class Data implements ListAdapter {
 
     public void addSuperheroe(ICreature superheroe) {
         superheroes.add(superheroe);
+    }
+
+    ArrayList<ICreature> getEnemies() {
+        return enemies;
+    }
+
+    void setEnemies(ArrayList<ICreature> enemies) {
+        this.enemies = enemies;
     }
 }

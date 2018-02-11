@@ -10,18 +10,20 @@ abstract class AbstractCreature implements ICreature {
     private int strike;
     private int defense;
     private String imageName;
+    private String type;
 
     AbstractCreature() {
 
     }
 
-    AbstractCreature(String barcode, String name, int energy, int strike, int defense, String imageName) {
+    AbstractCreature(String barcode, String name, int energy, int strike, int defense, String imageName, String type) {
         this.barcode = barcode;
         this.name = name;
         this.energy = energy;
         this.strike = strike;
         this.defense = defense;
         this.imageName = imageName;
+        this.type = type;
     }
 
     AbstractCreature(Parcel in) {
@@ -101,5 +103,13 @@ abstract class AbstractCreature implements ICreature {
 
     public void setImageName(String imageName) {
         this.imageName = imageName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

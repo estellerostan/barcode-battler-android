@@ -14,22 +14,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button generateButton;
-    private Button toPoolButton;
-    private Button toBattleButton;
-
-    private Data data;
-    private BarcodeBattlerDatabaseAdapter databaseAdapter;
-    private ArrayList<ICreature> superheroes;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        generateButton = (Button) findViewById(R.id.generate);
-        toPoolButton = (Button) findViewById(R.id.toPool);
-        toBattleButton = (Button) findViewById(R.id.toBattle);
+        Button generateButton = (Button) findViewById(R.id.generate);
+        Button toPoolButton = (Button) findViewById(R.id.toPool);
+        Button toBattleButton = (Button) findViewById(R.id.toBattle);
 
         generateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,18 +47,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        databaseAdapter = new BarcodeBattlerDatabaseAdapter(getApplicationContext());
-        databaseAdapter.open();
-
-        data = new Data();
+        Data data = new Data();
 
 //        getApplicationContext().deleteDatabase("database.db"); // DEBUG
 
-        superheroes = data.getSuperheroes();
-        databaseAdapter = new BarcodeBattlerDatabaseAdapter(getApplicationContext());
+        BarcodeBattlerDatabaseAdapter databaseAdapter = new BarcodeBattlerDatabaseAdapter(getApplicationContext());
         databaseAdapter.open();
 
-        int i = 0;
+        ArrayList<ICreature> superheroes = data.getSuperheroes();
+
         for (ICreature superhero : superheroes
                 ) {
 
@@ -77,19 +66,49 @@ public class MainActivity extends AppCompatActivity {
                         superhero.getEnergy(),
                         superhero.getStrike(),
                         superhero.getDefense(),
-                        superhero.getImageName()
+                        superhero.getImageName(),
+                        superhero.getType()
                 );
 //                System.out.println( "---------------------------------------------------------------------------" + databaseAdapter.getCreature(superhero.getBarcode()).getId()); // debug
 //                System.out.println( "---------------------------------------------------------------------------" + superhero.getName()); // debug
             }
+        }
 //            }
+
+        // on supprime les anciens ennemis...
+        for (ICreature enemy : databaseAdapter.getEnemies()) {
+            databaseAdapter.deleteEnemy(enemy.getId());
+        }
+
+        //  pour les remplacer par des nouveaux
+        ArrayList<ICreature> enemies = data.getEnemies();
+
+        for (ICreature enemy : enemies
+                ) {
+
+            if (databaseAdapter.getCreature(enemy.getBarcode()).getBarcode() == null) { // Les créatures ne peuvent etre ajoutées qu'une seule fois
+                databaseAdapter.insertCreature(
+                        enemy.getBarcode(),
+                        enemy.getName(),
+                        enemy.getEnergy(),
+                        enemy.getStrike(),
+                        enemy.getDefense(),
+                        enemy.getImageName(),
+                        enemy.getType()
+                );
+//                System.out.println( "---------------------------------------------------------------------------" + databaseAdapter.getCreature(superhero.getBarcode()).getId()); // debug
+//                System.out.println( "---------------------------------------------------------------------------" + superhero.getName()); // debug
+            }
         }
 
         ArrayList<ICreature> savedCreatures = databaseAdapter.getCreatures();
-
-
         if (savedCreatures != null) {
-            data.setSuperheroes(savedCreatures);
+            for (ICreature savedCreature : savedCreatures
+                    ) {
+                if (savedCreature.getType().equals("SUPERHERO")) {
+                    data.setSuperheroes(savedCreatures);
+                }
+            }
         }
     }
 }

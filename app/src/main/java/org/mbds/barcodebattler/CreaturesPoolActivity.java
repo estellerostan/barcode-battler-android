@@ -130,12 +130,13 @@ public class CreaturesPoolActivity extends BaseActivity {
 //                    return;
 //                }
 
+            assert imageBitmap != null;
             Frame frame = new Frame.Builder().setBitmap(imageBitmap).build();
             SparseArray<Barcode> barcodes = detector.detect(frame);
 
             String thisCode = barcodes.valueAt(0).rawValue;
 //          System.out.println( "--------------------------------------------------------------------------- barcode de l'item ajoute : "+ thisCode);
-            ICreature creature = new Creature(thisCode, "**Custom**", 1, 1, 1, "blank");
+            ICreature creature = new Creature(thisCode, "**Custom**", 1, 1, 1, "blank", "SUPERHERO");
             BarcodeToCreatureConverter converter = new BarcodeToCreatureConverter(creature);
             creature = converter.convert(thisCode);
 
@@ -146,7 +147,8 @@ public class CreaturesPoolActivity extends BaseActivity {
                         creature.getEnergy(),
                         creature.getStrike(),
                         creature.getDefense(),
-                        creature.getImageName()
+                        creature.getImageName(),
+                        creature.getType()
                 );
                 ICreature addedCreature = databaseAdapter.getCreature(creature.getBarcode());
                 databaseAdapter.updateCreature(addedCreature.getId(), "Barcode challenger " + addedCreature.getId());

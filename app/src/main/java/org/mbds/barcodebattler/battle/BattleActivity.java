@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import org.mbds.barcodebattler.R;
 import org.mbds.barcodebattler.data.ICreature;
+import org.mbds.barcodebattler.util.BarcodeBattlerDatabaseAdapter;
 
 public class BattleActivity extends AppCompatActivity {
 
@@ -54,6 +55,24 @@ public class BattleActivity extends AppCompatActivity {
 
         P1Image = (ImageView) findViewById(R.id.monsterImageP1);
         P2Image = (ImageView) findViewById(R.id.monsterImageP2);
+
+        // TODO: a deplacer + sauvegarde du monstre choisit au debut du combat
+        BarcodeBattlerDatabaseAdapter databaseAdapter = new BarcodeBattlerDatabaseAdapter(getApplicationContext());
+        databaseAdapter.open();
+
+        ICreature enemy = databaseAdapter.getEnemy();
+
+        P2StatsCreatureName.setText(enemy.getName());
+        P2HP.setText(String.valueOf(enemy.getEnergy()));
+        P2ST.setText(String.valueOf(enemy.getStrike()));
+        P2DF.setText(String.valueOf(enemy.getDefense()));
+
+        String mDrawableN = enemy.getImageName();
+        int resI = getResources().getIdentifier(mDrawableN, "drawable", getApplicationContext().getPackageName());
+
+        Bitmap bitma = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                resI);
+        P2Image.setImageBitmap(bitma);
 
         gameMsg = (TextView) findViewById(R.id.game_msg);
 
