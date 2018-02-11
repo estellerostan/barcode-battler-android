@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,11 +16,10 @@ import android.widget.Toast;
 import org.mbds.barcodebattler.R;
 import org.mbds.barcodebattler.data.Creature;
 import org.mbds.barcodebattler.data.ICreature;
+import org.mbds.barcodebattler.util.BarcodeBattlerDatabaseAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.mbds.barcodebattler.util.BarcodeBattlerDatabaseAdapter;
 
 public class BattleActivity extends AppCompatActivity {
 
@@ -62,20 +60,33 @@ public class BattleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_battle);
 
+        final String superheroType = "SUPERHERO";
+
+        String barcode1 = "340912373503";
+        String barcode2 = "331010383501";
+        String barcode3 = "9691260136502";
+        String barcode4 = "401207336501";
+        String barcode5 = "391110346509";
+        String barcode6 = "320813183500";
+
+        ICreature s1 = new Creature(barcode1, "Beast Feast", 500, 300, 400, "beast_feast", superheroType);
+        ICreature s2 = new Creature(barcode2, "Cool Candy", 400, 250, 300, "cool_candy", superheroType);
+        ICreature s3 = new Creature(barcode3, "Jam Bam", 1000, 250, 300, "jam_bam", superheroType);
+        ICreature s4 = new Creature(barcode4, "Jaw Breaker", 1, 2, 3, "jaw_breaker", superheroType);
+        ICreature s5 = new Creature(barcode5, "Mega Blaster", 1, 2, 3, "mega_blaster", superheroType);
+        ICreature s6 = new Creature(barcode6, "Razor Fist", 1000, 200, 300, "razor_fist", superheroType);
+
+
 
         List<ICreature> P1creatures = new ArrayList<ICreature>();
-        //ICreature s1 = new Creature("Beast Feast", 40, 500, 100, "beast_feast");
-        //ICreature s3 = new Creature("Jam Bam", 1000, 250, 350, "jam_bam");
-        //P1creatures.add(s1);
-        //P1creatures.add(s3);
+        P1creatures.add(s1);
+        P1creatures.add(s3);
 
         List<ICreature> P2creatures = new ArrayList<ICreature>();
-        //ICreature s2 = new Creature("Cool Candy", 550, 400, 200, "cool_candy");
-        //ICreature s6 = new Creature("Razor Fist", 1000, 450, 300, "razor_fist");
-        //P2creatures.add(s2);
-        //P2creatures.add(s6);
+        P2creatures.add(s2);
+        P2creatures.add(s6);
 
-        //battle = new Battle(P1creatures, P2creatures, this);
+        battle = new Battle(P1creatures, P2creatures, this);
 
 
         P1StatsCreatureName = (TextView) findViewById(R.id.monsterInfoP1);

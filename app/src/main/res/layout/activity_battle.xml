@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="org.mbds.barcodebattler.battle.BattleActivity">
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="org.mbds.barcodebattler.battle.BattleActivity"
 
-    <LinearLayout
-        android:layout_width="368dp"
-        android:layout_height="495dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
         android:orientation="vertical"
-        android:weightSum="1"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        android:weightSum="1">
 
         <GridLayout
             android:layout_width="match_parent"
@@ -161,6 +158,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.2"
                     android:text="Monster 1"
+                    android:gravity="center_vertical"
                     android:textAlignment="center"
                     android:textSize="10dp"
                     android:textStyle="italic" />
@@ -172,6 +170,7 @@
                     android:layout_column="0"
                     android:layout_columnWeight="1"
                     android:layout_row="0"
+                    android:layout_gravity="center"
                     android:layout_rowWeight="1"
                     android:layout_weight="0.8"
                     app:srcCompat="@android:drawable/sym_def_app_icon" />
@@ -318,6 +317,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.2"
                     android:text="Monster 2"
+                    android:gravity="center_vertical"
                     android:textAlignment="center"
                     android:textSize="10dp"
                     android:textStyle="italic" />
@@ -327,6 +327,7 @@
                     android:layout_weight="0.8"
                     android:layout_width="170dp"
                     android:layout_height="100dp"
+                    android:layout_gravity="center"
                     android:text="2"
                     app:srcCompat="@android:drawable/sym_def_app_icon" />
 
@@ -380,7 +381,4 @@
 
         </LinearLayout>
 
-    </LinearLayout>
-
-
-</RelativeLayout>
+</LinearLayout>
