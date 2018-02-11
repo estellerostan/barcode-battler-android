@@ -100,15 +100,5 @@ public class MainActivity extends AppCompatActivity {
 //                System.out.println( "---------------------------------------------------------------------------" + superhero.getName()); // debug
             }
         }
-
-        ArrayList<ICreature> savedCreatures = databaseAdapter.getCreatures();
-        if (savedCreatures != null) {
-            for (ICreature savedCreature : savedCreatures
-                    ) {
-                if (savedCreature.getType().equals("SUPERHERO")) {
-                    data.setSuperheroes(savedCreatures);
-                }
-            }
-        }
     }
 }
