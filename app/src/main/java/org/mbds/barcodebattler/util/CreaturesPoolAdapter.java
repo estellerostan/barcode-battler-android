@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -106,6 +107,9 @@ public class CreaturesPoolAdapter extends ArrayAdapter<ICreature> {
 
         image.setImageBitmap(
                 decodeSampledBitmapFromResource(returnView.getContext().getResources(), resID, 100, 100));
+
+        Button addToBattle = returnView.findViewById(R.id.addToBattle);
+        addToBattle.setVisibility(View.GONE);
 
         return returnView;
     }

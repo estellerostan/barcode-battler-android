@@ -30,8 +30,8 @@
     <string name="msg_lose">You lose !</string>
     <string name="msg_win">Opponent\'s monster died ! It\'s your WIN !</string>
 
-
-
+    <!-- Superhero Activity -->
+    <string name="add_to_battle">Combattre</string>
 
 
 </resources>

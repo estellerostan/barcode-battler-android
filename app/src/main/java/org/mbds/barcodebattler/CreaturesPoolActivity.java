@@ -105,7 +105,7 @@ public class CreaturesPoolActivity extends BaseActivity {
         addCreatureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Ajouter une créature ou un équippement en scannant un code barre #1
+                // TODO: Ajouter un équippement en scannant un code barre #1
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);

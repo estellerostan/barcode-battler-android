@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,18 +7,19 @@
     tools:context="org.mbds.barcodebattler.battle.BattleActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="368dp"
+        android:layout_height="495dp"
         android:orientation="vertical"
         android:weightSum="1"
-        >
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
 
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="0.8"
             android:columnCount="2"
             android:rowCount="2"
-            android:layout_weight="0.8"
             >
 
             <!-- 1rst ROW : 1rst Player -->
@@ -29,14 +30,14 @@
                 android:id="@+id/P1Stats"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-
                 android:layout_column="1"
-                android:layout_row="0"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
 
-                android:background="@drawable/border_p1">
+                android:layout_columnWeight="1"
+                android:layout_row="0"
+                android:layout_rowWeight="1"
+                android:background="@drawable/border_p1"
+
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/InfoP1"
@@ -60,17 +61,17 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="horizontal"
-                    android:weightSum="2"
-                    android:gravity="center">
+                    android:weightSum="2">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/HPcolorLabel"
+                        android:layout_weight="1"
                         android:text="@string/label_energy"
                         android:textAlignment="center"
-                        android:layout_weight="1"/>
+                        android:textColor="@color/HPcolorLabel" />
 
                     <TextView
                         android:id="@+id/P1MonsterHP"
@@ -91,17 +92,17 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/STcolorLabel"
+                        android:layout_weight="1"
                         android:text="@string/label_strike"
                         android:textAlignment="center"
-                        android:layout_weight="1"/>
+                        android:textColor="@color/STcolorLabel" />
 
                     <TextView
                         android:id="@+id/P1monsterST"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/STcolorLabel"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1"
+                        android:textColor="@color/STcolorLabel" />
 
                 </LinearLayout>
 
@@ -115,17 +116,17 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/DFcolorLabel"
+                        android:layout_weight="1"
                         android:text="@string/label_defence"
                         android:textAlignment="center"
-                        android:layout_weight="1"/>
+                        android:textColor="@color/DFcolorLabel" />
 
                     <TextView
                         android:id="@+id/P1monsterDF"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/DFcolorLabel"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1"
+                        android:textColor="@color/DFcolorLabel" />
 
                 </LinearLayout>
 
@@ -146,12 +147,12 @@
                 android:id="@+id/P1Image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-
                 android:layout_column="0"
+
                 android:layout_columnWeight="1"
                 android:layout_row="0"
                 android:layout_rowWeight="1"
+                android:orientation="vertical"
                 android:weightSum="1"
                 >
 
@@ -159,22 +160,22 @@
                     android:id="@+id/monsterNameP1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
                     android:text="Monster 1"
                     android:textAlignment="center"
                     android:textSize="10dp"
-                    android:textStyle="italic"
-                    android:layout_weight="0.2"/>
+                    android:textStyle="italic" />
 
                 <ImageView
                     android:id="@+id/monsterImageP1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="190dp"
+                    android:layout_height="100dp"
                     android:layout_column="0"
                     android:layout_columnWeight="1"
                     android:layout_row="0"
                     android:layout_rowWeight="1"
-                    app:srcCompat="@android:drawable/sym_def_app_icon"
-                    android:layout_weight="0.8"/>
+                    android:layout_weight="0.8"
+                    app:srcCompat="@android:drawable/sym_def_app_icon" />
 
             </LinearLayout>
 
@@ -188,14 +189,14 @@
                 android:id="@+id/P2Stats"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-
                 android:layout_column="0"
-                android:layout_row="1"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
 
-                android:background="@drawable/border_p2">
+                android:layout_columnWeight="1"
+                android:layout_row="1"
+                android:layout_rowWeight="1"
+                android:background="@drawable/border_p2"
+
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/InfoP2"
@@ -219,17 +220,17 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:orientation="horizontal"
-                    android:weightSum="2"
-                    android:layout_gravity="center_horizontal">
+                    android:weightSum="2">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/HPcolorLabel"
+                        android:layout_weight="1"
                         android:text="@string/label_energy"
                         android:textAlignment="center"
-                        android:layout_weight="1"/>
+                        android:textColor="@color/HPcolorLabel" />
 
                     <TextView
                         android:id="@+id/P2MonsterHP"
@@ -251,17 +252,17 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/STcolorLabel"
+                        android:layout_weight="1"
                         android:text="@string/label_strike"
                         android:textAlignment="center"
-                        android:layout_weight="1"/>
+                        android:textColor="@color/STcolorLabel" />
 
                     <TextView
                         android:id="@+id/P2monsterST"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/STcolorLabel"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1"
+                        android:textColor="@color/STcolorLabel" />
 
                 </LinearLayout>
 
@@ -275,17 +276,17 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/DFcolorLabel"
+                        android:layout_weight="1"
                         android:text="@string/label_defence"
                         android:textAlignment="center"
-                        android:layout_weight="1"/>
+                        android:textColor="@color/DFcolorLabel" />
 
                     <TextView
                         android:id="@+id/P2monsterDF"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/DFcolorLabel"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1"
+                        android:textColor="@color/DFcolorLabel" />
 
                 </LinearLayout>
 
@@ -305,12 +306,12 @@
                 android:id="@+id/P2Image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-
                 android:layout_column="1"
+
                 android:layout_columnWeight="1"
                 android:layout_row="1"
                 android:layout_rowWeight="1"
+                android:orientation="vertical"
 
                 android:weightSum="1"
                 >
@@ -319,19 +320,19 @@
                     android:id="@+id/monsterNameP2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
                     android:text="Monster 2"
                     android:textAlignment="center"
                     android:textSize="10dp"
-                    android:textStyle="italic"
-                    android:layout_weight="0.2"/>
+                    android:textStyle="italic" />
 
                 <ImageView
                     android:id="@+id/monsterImageP2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="0.8"
                     android:text="2"
-                    app:srcCompat="@android:drawable/sym_def_app_icon"
-                    android:layout_weight="0.8"/>
+                    app:srcCompat="@android:drawable/sym_def_app_icon" />
 
             </LinearLayout>
 
@@ -342,23 +343,23 @@
         <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_weight="0.2"
+            android:orientation="horizontal"
         >
 
             <TextView
                 android:id="@+id/game_msg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="Message du jeu ici"
-                android:textSize="15dp"
-                android:textColor="@color/colorPrimaryDark"
                 android:layout_weight="0.2"
-                android:gravity="center_vertical"/>
+                android:gravity="center_vertical"
+                android:text="Message du jeu ici"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15dp" />
 
         </LinearLayout>
 
     </LinearLayout>
 
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
