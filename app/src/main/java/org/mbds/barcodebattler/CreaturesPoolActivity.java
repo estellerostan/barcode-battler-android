@@ -25,6 +25,8 @@ import org.mbds.barcodebattler.util.BarcodeToCreatureConverter;
 import org.mbds.barcodebattler.util.BaseActivity;
 import org.mbds.barcodebattler.util.CreaturesPoolAdapter;
 
+import java.util.ArrayList;
+
 public class CreaturesPoolActivity extends BaseActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     //This flag is required to avoid first time onResume refreshing
@@ -52,7 +54,19 @@ public class CreaturesPoolActivity extends BaseActivity {
         if (!data.isEmpty()) {
             customAdapter = new CreaturesPoolAdapter(this, R.layout.activity_creatures_pool, data.getSuperheroes());
             customAdapter.clear();
-            data.setSuperheroes(databaseAdapter.getCreatures());
+//            data.setSuperheroes(databaseAdapter.getCreatures());
+
+            data.setSuperheroes(new ArrayList<ICreature>());
+            ArrayList<ICreature> savedCreatures = databaseAdapter.getCreatures();
+            if (savedCreatures != null) {
+                for (ICreature savedCreature : savedCreatures
+                        ) {
+                    if (savedCreature.getType().equals("SUPERHERO")) {
+                        data.addSuperheroe(savedCreature);
+                    }
+                }
+            }
+
             customAdapter.addAll(data.getSuperheroes());
             customAdapter.notifyDataSetChanged();
             creaturesPool.setAdapter(customAdapter);

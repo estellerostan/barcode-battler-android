@@ -118,7 +118,7 @@ public class BarcodeBattlerDatabaseAdapter {
                 temp.setStrike(Integer.parseInt(cursor.getString(4)));
                 temp.setDefense(Integer.parseInt(cursor.getString(5)));
                 temp.setImageName(cursor.getString(6));
-                temp.setType(cursor.getString(6));
+                temp.setType(cursor.getString(7));
 //            System.out.println( "---------------------------------------------------------------------------"+ temp.getName()+ " lu depuis la base de donnees " ); // debug
                 creatures.add(temp);
             }
