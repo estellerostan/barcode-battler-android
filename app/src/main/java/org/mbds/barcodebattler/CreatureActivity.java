@@ -26,7 +26,7 @@ public class CreatureActivity extends BaseActivity {
         TextView strike = (TextView) findViewById(R.id.strike);
         TextView defense = (TextView) findViewById(R.id.defense);
         ImageView icon = (ImageView) findViewById(R.id.icon);
-        Button addToBattle = (Button) findViewById(R.id.addToBattle);
+        final Button addToBattle = (Button) findViewById(R.id.addToBattle);
 
         Bundle extras = getIntent().getExtras();
         creature = extras.getParcelable("creature");
@@ -48,6 +48,8 @@ public class CreatureActivity extends BaseActivity {
         addToBattle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                addToBattle.setEnabled(false);
+
                 Intent intent = new Intent(CreatureActivity.this, BattleActivity.class);
 
                 intent.putExtra("creatureP1", creature);

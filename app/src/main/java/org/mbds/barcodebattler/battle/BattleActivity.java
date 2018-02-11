@@ -37,6 +37,7 @@ public class BattleActivity extends AppCompatActivity {
 
     BattleState battle;
     ICreature creature;
+    ICreature enemy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,23 +61,27 @@ public class BattleActivity extends AppCompatActivity {
         BarcodeBattlerDatabaseAdapter databaseAdapter = new BarcodeBattlerDatabaseAdapter(getApplicationContext());
         databaseAdapter.open();
 
-        ICreature enemy = databaseAdapter.getEnemy();
-
-        P2StatsCreatureName.setText(enemy.getName());
-        P2HP.setText(String.valueOf(enemy.getEnergy()));
-        P2ST.setText(String.valueOf(enemy.getStrike()));
-        P2DF.setText(String.valueOf(enemy.getDefense()));
-
-        String mDrawableN = enemy.getImageName();
-        int resI = getResources().getIdentifier(mDrawableN, "drawable", getApplicationContext().getPackageName());
-
-        Bitmap bitma = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                resI);
-        P2Image.setImageBitmap(bitma);
-
         gameMsg = (TextView) findViewById(R.id.game_msg);
 
-//        List<Creature> creaturesP1 = new ArrayList<Creature>();
+        enemy = databaseAdapter.getEnemy();
+        // Load P2
+        if (enemy != null) {
+            P2StatsCreatureName.setText(enemy.getName());
+            P2HP.setText(String.valueOf(enemy.getEnergy()));
+            P2ST.setText(String.valueOf(enemy.getStrike()));
+            P2DF.setText(String.valueOf(enemy.getDefense()));
+
+            String mDrawableN = enemy.getImageName();
+            int resI = getResources().getIdentifier(mDrawableN, "drawable", getApplicationContext().getPackageName());
+
+            Bitmap bitma = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                    resI);
+            P2Image.setImageBitmap(bitma);
+        } else {
+            LoadPreferences();
+        }
+
+        // Load P! from various sources
         if (getIntent().getExtras() != null) {
             creature = getIntent().getExtras().getParcelable("creatureP1");
 
@@ -97,11 +102,11 @@ public class BattleActivity extends AppCompatActivity {
                 Toast.makeText(this, "Début du combat", Toast.LENGTH_LONG).show();
             }
         } else if (savedInstanceState != null) {
-            P1StatsCreatureName.setText(savedInstanceState.getString("name"));
-            P1HP.setText(savedInstanceState.getInt("energy"));
-            P1ST.setText(savedInstanceState.getInt("strike"));
-            P1DF.setText(savedInstanceState.getInt("defense"));
-            String mDrawableName = savedInstanceState.getString("imageName");
+            P1StatsCreatureName.setText(savedInstanceState.getString("hero_name"));
+            P1HP.setText(savedInstanceState.getInt("hero_energy"));
+            P1ST.setText(savedInstanceState.getInt("hero_strike"));
+            P1DF.setText(savedInstanceState.getInt("hero_defense"));
+            String mDrawableName = savedInstanceState.getString("hero_imageName");
             int resID = getResources().getIdentifier(mDrawableName, "drawable", getApplicationContext().getPackageName());
 
             Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
@@ -132,27 +137,48 @@ public class BattleActivity extends AppCompatActivity {
 
     private void SavePreferences() {
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor creature = sharedPreferences.edit();
-        creature.putString("name", this.creature.getName());
-        creature.putInt("energy", this.creature.getEnergy());
-        creature.putInt("strike", this.creature.getStrike());
-        creature.putInt("defense", this.creature.getDefense());
-        creature.putString("imageName", this.creature.getImageName());
-        creature.apply();   // I missed to save the data to preference here,.
+        SharedPreferences.Editor creatures = sharedPreferences.edit();
+        creatures.putString("hero_name", this.creature.getName());
+        creatures.putInt("hero_energy", this.creature.getEnergy());
+        creatures.putInt("hero_strike", this.creature.getStrike());
+        creatures.putInt("hero_defense", this.creature.getDefense());
+        creatures.putString("hero_imageName", this.creature.getImageName());
+
+        creatures.putString("enemy_name", this.enemy.getName());
+        creatures.putInt("enemy_energy", this.enemy.getEnergy());
+        creatures.putInt("enemy_strike", this.enemy.getStrike());
+        creatures.putInt("enemy_defense", this.enemy.getDefense());
+        creatures.putString("enemy_imageName", this.enemy.getImageName());
+        creatures.apply();
     }
 
     private void LoadPreferences() {
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        P1StatsCreatureName.setText(sharedPreferences.getString("name", null));
-        P1HP.setText(String.valueOf(sharedPreferences.getInt("energy", 0)));
-        P1ST.setText(String.valueOf(sharedPreferences.getInt("strike", 0)));
-        P1DF.setText(String.valueOf(sharedPreferences.getInt("defense", 0)));
-        String mDrawableName = sharedPreferences.getString("imageName", null);
-        int resID = getResources().getIdentifier(mDrawableName, "drawable", getApplicationContext().getPackageName());
+        if (sharedPreferences.getString("hero_name", null) != null) {
+            P1StatsCreatureName.setText(sharedPreferences.getString("hero_name", null));
+            P1HP.setText(String.valueOf(sharedPreferences.getInt("hero_energy", 0)));
+            P1ST.setText(String.valueOf(sharedPreferences.getInt("hero_strike", 0)));
+            P1DF.setText(String.valueOf(sharedPreferences.getInt("hero_defense", 0)));
+            String mDrawableName = sharedPreferences.getString("hero_imageName", null);
+            int resID = getResources().getIdentifier(mDrawableName, "drawable", getApplicationContext().getPackageName());
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                resID);
-        P1Image.setImageBitmap(bitmap);
+            Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                    resID);
+            P1Image.setImageBitmap(bitmap);
+        }
+
+        if (sharedPreferences.getString("enemy_name", null) != null) {
+            P2StatsCreatureName.setText(sharedPreferences.getString("enemy_name", null));
+            P2HP.setText(String.valueOf(sharedPreferences.getInt("enemy_energy", 0)));
+            P2ST.setText(String.valueOf(sharedPreferences.getInt("enemy_strike", 0)));
+            P2DF.setText(String.valueOf(sharedPreferences.getInt("enemy_defense", 0)));
+            String name = sharedPreferences.getString("enemy_imageName", null);
+            int res = getResources().getIdentifier(name, "drawable", getApplicationContext().getPackageName());
+
+            Bitmap abitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                    res);
+            P2Image.setImageBitmap(abitmap);
+        }
     }
 
     @Override
