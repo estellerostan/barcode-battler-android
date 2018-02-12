@@ -103,7 +103,7 @@ public class BattleActivity extends AppCompatActivity {
             creature = getIntent().getExtras().getParcelable("creatureP1");
 
             //Todo charger un monstre déjà existant
-            enemy = databaseAdapter.getEnemy();
+            enemy = databaseAdapter.getRandomEnemy();
 
             P1creatures.add(creature);
             P2creatures.add(enemy);
