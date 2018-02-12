@@ -3,7 +3,7 @@
 
     <!-- Creature Generator & Pool Strings -->
     <string name="label_generator">Barcode: </string>
-    <string name="button_generator">Generate</string>
+    <string name="button_generator">Generer une créature (manuellement)</string>
     <string name="button_toPool">Voir les créatures</string>
     <string name="button_toBattle">Battle</string>
 

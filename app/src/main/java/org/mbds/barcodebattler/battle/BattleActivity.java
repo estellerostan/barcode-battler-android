@@ -1,5 +1,6 @@
 package org.mbds.barcodebattler.battle;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.mbds.barcodebattler.CreatureActivity;
+import org.mbds.barcodebattler.CreaturesPoolActivity;
 import org.mbds.barcodebattler.R;
 import org.mbds.barcodebattler.data.Creature;
 import org.mbds.barcodebattler.data.ICreature;
@@ -67,33 +70,9 @@ public class BattleActivity extends AppCompatActivity {
 
         final String superheroType = "SUPERHERO";
 
-        String barcode1 = "340912373503";
-        String barcode2 = "331010383501";
-        String barcode3 = "9691260136502";
-        String barcode4 = "401207336501";
-        String barcode5 = "391110346509";
-        String barcode6 = "320813183500";
-
         List<ICreature> P1creatures = new ArrayList<ICreature>();
 
         List<ICreature> P2creatures = new ArrayList<ICreature>();
-
-        /*
-        ICreature s1 = new Creature(barcode1, "Beast Feast", 500, 300, 400, "beast_feast", superheroType);
-        ICreature s2 = new Creature(barcode2, "Cool Candy", 400, 250, 300, "cool_candy", superheroType);
-        ICreature s3 = new Creature(barcode3, "Jam Bam", 1000, 250, 300, "jam_bam", superheroType);
-        ICreature s4 = new Creature(barcode4, "Jaw Breaker", 1, 2, 3, "jaw_breaker", superheroType);
-        ICreature s5 = new Creature(barcode5, "Mega Blaster", 1, 2, 3, "mega_blaster", superheroType);
-        ICreature s6 = new Creature(barcode6, "Razor Fist", 1000, 200, 300, "razor_fist", superheroType);
-
-        List<ICreature> P1creatures = new ArrayList<ICreature>();
-        P1creatures.add(s1);
-        P1creatures.add(s3);
-
-        List<ICreature> P2creatures = new ArrayList<ICreature>();
-        P2creatures.add(s2);
-        P2creatures.add(s6);
-        */
 
         //Initialisation du code
         if (getIntent().getExtras() != null) {
@@ -108,12 +87,21 @@ public class BattleActivity extends AppCompatActivity {
             P1creatures.add(creature);
             P2creatures.add(enemy);
 
+
+            //battle = new Battle(P1creatures, P2creatures, this);
             //LoadPreferences();
             //Toast.makeText(this, "Reprise du combat", Toast.LENGTH_LONG).show();
 
         } else {
+            Log.d(TAG, "[game] No data in intent - will crash");
 
-            Log.d(TAG, "[game] No data in intent - will crash ");
+            P1creatures.add(new Creature("","",0,0,0,"", ""));
+            P2creatures.add(new Creature("","",0,0,0,"", ""));
+
+            Intent intent = new Intent(BattleActivity.this, CreaturesPoolActivity.class);
+            intent.putExtra("msg", "Selectionnez une créature pour débuter");
+            BattleActivity.this.startActivity(intent);
+            BattleActivity.this.finish();
 
         }
 
@@ -255,10 +243,13 @@ public class BattleActivity extends AppCompatActivity {
                 P1DF.setText(Integer.toString(battle.getBattleState().getPlayer1CurrentCreature().getDefense()));
                 // TODO : les images
                 mDrawableN= battle.getBattleState().getPlayer1CurrentCreature().getImageName();
-                resI = getResources().getIdentifier(mDrawableN, "drawable", getApplicationContext().getPackageName());
-                bitma = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                        resI);
-                P1Image.setImageBitmap(bitma);
+                if ( !mDrawableN.isEmpty() && mDrawableN != null ) {
+                    resI = getResources().getIdentifier(mDrawableN, "drawable", getApplicationContext().getPackageName());
+                    bitma = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                            resI);
+                    P1Image.setImageBitmap(bitma);
+                }
+
 
                 break;
             case PLAYER2:
@@ -269,11 +260,13 @@ public class BattleActivity extends AppCompatActivity {
                 P2DF.setText(Integer.toString(battle.getBattleState().getPlayer2CurrentCreature().getDefense()));
 
                 mDrawableN = battle.getBattleState().getPlayer2CurrentCreature().getImageName();
-                resI = getResources().getIdentifier(mDrawableN, "drawable", getApplicationContext().getPackageName());
+                if ( !mDrawableN.isEmpty() && mDrawableN != null ) {
+                    resI = getResources().getIdentifier(mDrawableN, "drawable", getApplicationContext().getPackageName());
 
-                bitma = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                        resI);
-                P2Image.setImageBitmap(bitma);
+                    bitma = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                            resI);
+                    P2Image.setImageBitmap(bitma);
+                }
 
                 break;
         }

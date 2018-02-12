@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,6 +29,7 @@ import org.mbds.barcodebattler.util.CreaturesPoolAdapter;
 import java.util.ArrayList;
 
 public class CreaturesPoolActivity extends BaseActivity {
+    private static final String TAG = CreaturesPoolActivity.class.getSimpleName();
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     //This flag is required to avoid first time onResume refreshing
     static boolean loaded = false;
@@ -70,6 +72,12 @@ public class CreaturesPoolActivity extends BaseActivity {
             customAdapter.addAll(data.getSuperheroes());
             customAdapter.notifyDataSetChanged();
             creaturesPool.setAdapter(customAdapter);
+        }
+
+        if ( getIntent().getExtras() != null ) {
+            Log.d(TAG, "[game] request to creature pool");
+            String msg = getIntent().getExtras().getString("msg");
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
         }
 
         creaturesPool.setOnItemClickListener(new AdapterView.OnItemClickListener() {
