@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         Data data = new Data();
 
-//        getApplicationContext().deleteDatabase("database.db"); // DEBUG
+        getApplicationContext().deleteDatabase("database.db"); // DEBUG
 
         BarcodeBattlerDatabaseAdapter databaseAdapter = new BarcodeBattlerDatabaseAdapter(getApplicationContext());
         databaseAdapter.open();

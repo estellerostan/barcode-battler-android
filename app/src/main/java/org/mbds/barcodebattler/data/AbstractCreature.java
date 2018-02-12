@@ -27,16 +27,18 @@ abstract class AbstractCreature implements ICreature {
     }
 
     AbstractCreature(Parcel in) {
-        String[] data = new String[6];
+        String[] data = new String[8];
         in.readStringArray(data);
 
         try {
-            this.barcode = data[0];
-            this.name = data[1];
-            this.energy = Integer.parseInt(data[2]);
-            this.strike = Integer.parseInt(data[3]);
-            this.defense = Integer.parseInt(data[4]);
-            this.imageName = data[5];
+            this.id = Integer.parseInt(data[0]);
+            this.barcode = data[1];
+            this.name = data[2];
+            this.energy = Integer.parseInt(data[3]);
+            this.strike = Integer.parseInt(data[4]);
+            this.defense = Integer.parseInt(data[5]);
+            this.imageName = data[6];
+            this.type = data[7];
         } catch (NumberFormatException e) {
             //Never trust user input :)
             // TODO:
@@ -46,7 +48,7 @@ abstract class AbstractCreature implements ICreature {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[]{barcode, name, String.valueOf(getEnergy()), String.valueOf(getStrike()), String.valueOf(getDefense()), imageName});
+        dest.writeStringArray(new String[]{String.valueOf(getId()), barcode, name, String.valueOf(getEnergy()), String.valueOf(getStrike()), String.valueOf(getDefense()), imageName, type});
     }
 
     public final int getId() {

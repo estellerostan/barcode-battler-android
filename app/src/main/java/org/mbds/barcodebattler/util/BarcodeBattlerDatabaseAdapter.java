@@ -226,6 +226,25 @@ public class BarcodeBattlerDatabaseAdapter {
         }
     }
 
+    public ICreature getCreature(int id) {
+        ICreature temp = new Creature();
+        try (Cursor cursor = db.rawQuery("SELECT * FROM creature WHERE id=?", new String[]{id + ""})) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+
+                temp.setId(Integer.parseInt(cursor.getString(0)));
+                temp.setBarcode(cursor.getString(1));
+                temp.setName(cursor.getString(2));
+                temp.setEnergy(Integer.parseInt(cursor.getString(3)));
+                temp.setStrike(Integer.parseInt(cursor.getString(4)));
+                temp.setDefense(Integer.parseInt(cursor.getString(5)));
+                temp.setImageName(cursor.getString(6));
+                temp.setType(cursor.getString(7));
+            }
+            return temp;
+        }
+    }
+
     public ICreature getRandomEnemy() {
         ICreature temp = new Creature();
         try (Cursor cursor = db.rawQuery("SELECT * FROM creature WHERE type=? ORDER BY RANDOM() LIMIT 1", new String[]{"ENEMY"})) {

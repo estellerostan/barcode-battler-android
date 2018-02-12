@@ -191,5 +191,8 @@ public class BattleState {
         return playerTurn;
     }
 
+    public void setPlayerTurn(Player player) {
+        this.playerTurn = player;
+    }
 
 }

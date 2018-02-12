@@ -33,7 +33,7 @@ public class Battle {
     }
 
     // > Demarre une battle
-    public void startBattle() {
+    void startBattle() {
         Log.d(TAG, "[game] Starting a new Battle");
         battleState.startTurn();
         String msg = activity.getResources().getString(R.string.msg_turn, Player.PLAYER1);
@@ -59,7 +59,7 @@ public class Battle {
                 disableActionButton();
 
                 battleState.applyDamage(Player.PLAYER2, dmg);
-                activity.setPlayerCreature(Player.PLAYER2);
+                activity.setPlayerCreature(Player.PLAYER2, died);
                 msg = activity.getResources().getString(R.string.msg_damage, player, dmg);
                 activity.updateGameMSG(msg);
 
@@ -80,7 +80,7 @@ public class Battle {
                 disableActionButton();
 
                 battleState.applyDamage(Player.PLAYER1, dmg);
-                activity.setPlayerCreature(Player.PLAYER1);
+                activity.setPlayerCreature(Player.PLAYER1, died);
                 msg = activity.getResources().getString(R.string.msg_damage, player, dmg);
                 activity.updateGameMSG(msg);
 
@@ -162,7 +162,7 @@ public class Battle {
                         //enableSummonTurnButton();
                         activity.updateGameMSG(activity.getResources().getString(R.string.msg_summon));
                         battleState.changeCreature(Player.PLAYER2);
-                        activity.setPlayerCreature(Player.PLAYER2);
+                        activity.setPlayerCreature(Player.PLAYER2, true);
 
                         changeTurn();
                         disableActionButton();
@@ -205,7 +205,7 @@ public class Battle {
                         //enableSummonTurnButton();
                         activity.updateGameMSG(activity.getResources().getString(R.string.msg_summon));
                         battleState.changeCreature(Player.PLAYER1);
-                        activity.setPlayerCreature(Player.PLAYER1);
+                        activity.setPlayerCreature(Player.PLAYER1, true);
 
                         changeTurn();
                         enableNextTurnButton();
