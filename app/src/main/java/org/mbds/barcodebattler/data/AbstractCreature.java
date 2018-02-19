@@ -26,6 +26,13 @@ abstract class AbstractCreature implements ICreature {
         this.type = type;
     }
 
+    AbstractCreature(String barcode, String name, String imageName, String type) {
+        this.barcode = barcode;
+        this.name = name;
+        this.imageName = imageName;
+        this.type = type;
+    }
+
     AbstractCreature(Parcel in) {
         String[] data = new String[8];
         in.readStringArray(data);
