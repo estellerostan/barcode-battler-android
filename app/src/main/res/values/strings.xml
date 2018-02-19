@@ -32,6 +32,7 @@
     <string name="msg_battle_winner">%1$s WIN THE BATTLE</string>
     <string name="msg_summon">You have lost your creature, another monster is summoned</string>
     <string name="msg_s">New Creature summoned</string>
+    <string name="msg_empty_battlefield">Pas de combat en cours, veuillez sélectionner un monstre dans la liste pour commencer le combat</string>
 
 
     <string name="btn_turn">Attack !</string>

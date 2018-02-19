@@ -1,6 +1,5 @@
 package org.mbds.barcodebattler.battle;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.mbds.barcodebattler.CreaturesPoolActivity;
 import org.mbds.barcodebattler.R;
 import org.mbds.barcodebattler.data.Creature;
 import org.mbds.barcodebattler.data.ICreature;
@@ -101,9 +99,9 @@ public class BattleActivity extends AppCompatActivity {
         databaseAdapter.open();
 
         if ( getIntent().getExtras() == null ) {
-                     Log.d(TAG, "[game] request to creature pool");
-                     String msg = getIntent().getExtras().getString("msg");
-                     Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+            String msg = getResources().getString(R.string.msg_empty_battlefield);
+            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+            BattleActivity.this.finish();
          } else
         {
             // -- View Component init : --
