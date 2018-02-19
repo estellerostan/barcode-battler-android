@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Data data = new Data();
+        Data data = new Data(getApplicationContext());
 
         getApplicationContext().deleteDatabase("database.db"); // DEBUG
 

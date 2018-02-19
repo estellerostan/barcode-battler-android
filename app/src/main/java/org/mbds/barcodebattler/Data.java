@@ -1,29 +1,36 @@
 package org.mbds.barcodebattler;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
+
 import org.mbds.barcodebattler.data.Creature;
 import org.mbds.barcodebattler.data.ICreature;
 import org.mbds.barcodebattler.util.BarcodeToCreatureConverter;
+import org.mbds.barcodebattler.util.ImageHelper;
 
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 
 class Data implements ListAdapter {
     private ArrayList<ICreature> superheroes;
     private ArrayList<ICreature> enemies;
     private BarcodeToCreatureConverter converter;
 
-    Data() {
+    private Context context;
+
+    Data(Context context) {
+        this.context = context;
         superheroes = new ArrayList<>();
         addSuperheroes();
         enemies = new ArrayList<>();
@@ -74,59 +81,50 @@ class Data implements ListAdapter {
     }
 
     private void addEnemies() {
-        for (int i = 0; i < 5; i++) {
-            // nextInt is normally exclusive of the top value,
-            // so add 1 to make it inclusive
-            int randomNum = ThreadLocalRandom.current().nextInt(0, 100 + 1);
+        String[] enemiesCardsNames = {"air_dragon",
+                                        "baguza",
+                                        "darman",
+                                        "dolcoon",
+                                        "droome",
+                                        "gilger",
+                                        "pandoral",
+                                        "rezadon",
+                                        "zanbee"
+                                        };
 
-            String barcode = String.valueOf(randomNum) + String.valueOf(i) + "3";
+        String[] enemiesNames = {"Air Dragon",
+                                "Baguza",
+                                "Darman",
+                                "Dolcoon",
+                                "Droome",
+                                "Gilger",
+                                "Pandoral",
+                                "Rezadon",
+                                "Zanbee"
+                                };
 
-            ICreature enemy = new Creature(barcode, "Enemy " + i, "blank", "ENEMY");
+        for (int i = 0; i < enemiesCardsNames.length; i++
+             ) {
+            String mDrawableName = enemiesCardsNames[i] + "_flip_side";
+            int resID = context.getResources().getIdentifier(mDrawableName, "drawable", context.getPackageName());
+
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resID);
+
+            BarcodeDetector detector =
+                    new BarcodeDetector.Builder(context).build();
+
+            Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+            SparseArray<Barcode> barcodes = detector.detect(frame);
+
+            String thisCode = barcodes.valueAt(0).rawValue;
+
+            ICreature enemy = new Creature(thisCode, enemiesNames[i], enemiesCardsNames[i], "ENEMY");
 
             converter = new BarcodeToCreatureConverter(enemy);
-            enemy = converter.convert(barcode);
+            enemy = converter.convert(thisCode);
 
             enemies.add(enemy);
         }
-    }
-
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) >= reqHeight
-                    && (halfWidth / inSampleSize) >= reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
-    }
-
-    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
-                                                         int reqWidth, int reqHeight) {
-
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(res, resId, options);
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeResource(res, resId, options);
     }
 
     @Override
@@ -188,7 +186,6 @@ class Data implements ListAdapter {
         TextView defense = returnView.findViewById(R.id.defense);
         defense.setText(String.valueOf(superheroes.get(position).getDefense()));
 
-        // TODO:
         ImageView image = returnView.findViewById(R.id.icon);
 
         String mDrawableName = superheroes.get(position).getImageName();
@@ -197,12 +194,9 @@ class Data implements ListAdapter {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeResource(returnView.getContext().getResources(), resID, options);
-        int imageHeight = options.outHeight;
-        int imageWidth = options.outWidth;
-        String imageType = options.outMimeType;
 
         image.setImageBitmap(
-                decodeSampledBitmapFromResource(returnView.getContext().getResources(), resID, 100, 100));
+                ImageHelper.decodeSampledBitmapFromResource(returnView.getContext().getResources(), resID, 100, 100));
 
         return returnView;
     }

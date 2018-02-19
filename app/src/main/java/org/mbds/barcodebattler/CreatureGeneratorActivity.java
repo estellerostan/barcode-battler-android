@@ -75,7 +75,7 @@ public class CreatureGeneratorActivity extends BaseActivity {
                 ImageView myImageView = (ImageView) findViewById(R.id.imgview);
                 Bitmap myBitmap = BitmapFactory.decodeResource(
                         getApplicationContext().getResources(),
-                        R.drawable.beast_feast__flip_side);
+                        R.drawable.beast_feast_flip_side);
                 myImageView.setImageBitmap(myBitmap);
 
                 BarcodeDetector detector =

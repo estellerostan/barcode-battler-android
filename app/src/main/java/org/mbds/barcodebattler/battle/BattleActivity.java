@@ -14,12 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.mbds.barcodebattler.CreatureActivity;
 import org.mbds.barcodebattler.CreaturesPoolActivity;
 import org.mbds.barcodebattler.R;
 import org.mbds.barcodebattler.data.Creature;
 import org.mbds.barcodebattler.data.ICreature;
 import org.mbds.barcodebattler.util.BarcodeBattlerDatabaseAdapter;
+import org.mbds.barcodebattler.util.ImageHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -217,12 +217,6 @@ public class BattleActivity extends AppCompatActivity {
     }
 
     public void setPlayerCreature(Player player, boolean died) {
-        String mDrawableN;
-        int resI;
-        Bitmap bitma;
-
-        ICreature creature;
-
         switch (player) {
             case PLAYER1:
                 creature = battle.getBattleState().getPlayer1CurrentCreature();
@@ -234,11 +228,15 @@ public class BattleActivity extends AppCompatActivity {
                 P1DF.setText(Integer.toString(creature.getDefense()));
 
                 if (died) {
-                    mDrawableN = battle.getBattleState().getPlayer1CurrentCreature().getImageName();
-                    resI = getResources().getIdentifier(mDrawableN, "drawable", getApplicationContext().getPackageName());
-                    bitma = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                            resI);
-                    P1Image.setImageBitmap(bitma);
+                    String drawable = battle.getBattleState().getPlayer1CurrentCreature().getImageName();
+                    int resID = getResources().getIdentifier(drawable, "drawable", getApplicationContext().getPackageName());
+
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeResource(getApplicationContext().getResources(), resID, options);
+
+                    P1Image.setImageBitmap(
+                            ImageHelper.decodeSampledBitmapFromResource(getApplicationContext().getResources(), resID, 100, 100));
                 }
                 break;
             case PLAYER2:
@@ -248,6 +246,18 @@ public class BattleActivity extends AppCompatActivity {
                 P2HP.setText(Integer.toString(creature.getEnergy()));
                 P2ST.setText(Integer.toString(creature.getStrike()));
                 P2DF.setText(Integer.toString(creature.getDefense()));
+
+                if (died) {
+                    String drawable = battle.getBattleState().getPlayer2CurrentCreature().getImageName();
+                    int resID = getResources().getIdentifier(drawable, "drawable", getApplicationContext().getPackageName());
+
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeResource(getApplicationContext().getResources(), resID, options);
+
+                    P2Image.setImageBitmap(
+                            ImageHelper.decodeSampledBitmapFromResource(getApplicationContext().getResources(), resID, 100, 100));
+                }
 
                 break;
         }

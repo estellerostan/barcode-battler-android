@@ -49,7 +49,7 @@ public class CreaturesPoolActivity extends BaseActivity {
         databaseAdapter = new BarcodeBattlerDatabaseAdapter(getApplicationContext());
         databaseAdapter.open();
 
-        data = new Data();
+        data = new Data(getApplicationContext());
 
         creaturesPool = (ListView) findViewById(R.id.creaturesPool);
 
