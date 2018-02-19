@@ -156,28 +156,37 @@ public class CreaturesPoolActivity extends BaseActivity {
             Frame frame = new Frame.Builder().setBitmap(imageBitmap).build();
             SparseArray<Barcode> barcodes = detector.detect(frame);
 
-            String thisCode = barcodes.valueAt(0).rawValue;
-//          System.out.println( "--------------------------------------------------------------------------- barcode de l'item ajoute : "+ thisCode);
-            ICreature creature = new Creature(thisCode, "**Custom**", 1, 1, 1, "blank", "SUPERHERO");
-            BarcodeToCreatureConverter converter = new BarcodeToCreatureConverter(creature);
-            creature = converter.convert(thisCode);
-
-            if (databaseAdapter.getCreature(creature.getBarcode()).getBarcode() == null) { // Les créatures ne peuvent etre ajoutées qu'une seule fois
-                databaseAdapter.insertCreature(
-                        creature.getBarcode(),
-                        creature.getName(),
-                        creature.getEnergy(),
-                        creature.getStrike(),
-                        creature.getDefense(),
-                        creature.getImageName(),
-                        creature.getType()
-                );
-                ICreature addedCreature = databaseAdapter.getCreature(creature.getBarcode());
-                databaseAdapter.updateCreature(addedCreature.getId(), "Barcode challenger " + addedCreature.getId());
-
-                customAdapter.add(addedCreature);
-                customAdapter.notifyDataSetChanged();
+            if (barcodes.size() != 0) {
+                String thisCode = barcodes.valueAt(0).rawValue;
+                addCreatureToDatabase(thisCode);
             }
+            else {
+                Toast.makeText(getApplicationContext(), "Pas de créature ajoutée car aucun code barre trouvé ! Veuillez réessayé", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void addCreatureToDatabase(String barcode) {
+//          System.out.println( "--------------------------------------------------------------------------- barcode de l'item ajoute : "+ thisCode);
+        ICreature creature = new Creature(barcode, "**Custom**", 1, 1, 1, "blank", "SUPERHERO");
+        BarcodeToCreatureConverter converter = new BarcodeToCreatureConverter(creature);
+        creature = converter.convert(barcode);
+
+        if (databaseAdapter.getCreature(creature.getBarcode()).getBarcode() == null) { // Les créatures ne peuvent etre ajoutées qu'une seule fois
+            databaseAdapter.insertCreature(
+                    creature.getBarcode(),
+                    creature.getName(),
+                    creature.getEnergy(),
+                    creature.getStrike(),
+                    creature.getDefense(),
+                    creature.getImageName(),
+                    creature.getType()
+            );
+            ICreature addedCreature = databaseAdapter.getCreature(creature.getBarcode());
+            databaseAdapter.updateCreature(addedCreature.getId(), "Barcode challenger " + addedCreature.getId());
+
+            customAdapter.add(addedCreature);
+            customAdapter.notifyDataSetChanged();
         }
     }
 
