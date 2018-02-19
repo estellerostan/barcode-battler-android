@@ -197,7 +197,7 @@ public class CreaturesPoolActivity extends BaseActivity {
 
     private void refresh() {
         customAdapter.clear();
-        data.setSuperheroes(databaseAdapter.getCreatures());
+        data.setSuperheroes(databaseAdapter.getSuperheroes());
         customAdapter.addAll(data.getSuperheroes());
         customAdapter.notifyDataSetChanged();
     }
