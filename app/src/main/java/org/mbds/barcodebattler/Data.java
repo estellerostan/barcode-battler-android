@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -17,10 +18,12 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import org.mbds.barcodebattler.data.Creature;
 import org.mbds.barcodebattler.data.ICreature;
+import org.mbds.barcodebattler.util.BarcodeBattlerDatabaseAdapter;
 import org.mbds.barcodebattler.util.BarcodeToCreatureConverter;
 import org.mbds.barcodebattler.util.ImageHelper;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 class Data implements ListAdapter {
     private ArrayList<ICreature> superheroes;
@@ -116,14 +119,30 @@ class Data implements ListAdapter {
             Frame frame = new Frame.Builder().setBitmap(bitmap).build();
             SparseArray<Barcode> barcodes = detector.detect(frame);
 
-            String thisCode = barcodes.valueAt(0).rawValue;
+            if (barcodes.size() != 0) {
+                String thisCode = barcodes.valueAt(0).rawValue;
 
-            ICreature enemy = new Creature(thisCode, enemiesNames[i], enemiesCardsNames[i], "ENEMY");
+                ICreature enemy = new Creature(thisCode, enemiesNames[i], enemiesCardsNames[i], "ENEMY");
 
-            converter = new BarcodeToCreatureConverter(enemy);
-            enemy = converter.convert(thisCode);
+                converter = new BarcodeToCreatureConverter(enemy);
+                enemy = converter.convert(thisCode);
 
-            enemies.add(enemy);
+                enemies.add(enemy);
+            }
+        }
+
+
+        BarcodeBattlerDatabaseAdapter databaseAdapter = new BarcodeBattlerDatabaseAdapter(context.getApplicationContext());
+        databaseAdapter.open();
+        if (databaseAdapter.getEnemies().size() == 0) { // if the scanner did not work then we create some creatures ourselves
+            for (int i = 0; i < 5; i++) {
+                // nextInt is normally exclusive of the top value,
+                // so add 1 to make it inclusive
+                int randomNum = ThreadLocalRandom.current().nextInt(0, 100 + 1);
+                String barcode = String.valueOf(randomNum) + String.valueOf(i) + "3";
+
+                ICreature enemy = new Creature(barcode, "Enemy " + i, "blank", "ENEMY");
+            }
         }
     }
 

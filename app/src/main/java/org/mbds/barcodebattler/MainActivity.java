@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         Button generateButton = (Button) findViewById(R.id.generate);
         Button toPoolButton = (Button) findViewById(R.id.toPool);
         Button toBattleButton = (Button) findViewById(R.id.toBattle);
+        Button toNetworkBattleButton = (Button) findViewById(R.id.toNetworkBattle);
 
         generateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,9 +48,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        toNetworkBattleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,BattleActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
+
         Data data = new Data(getApplicationContext());
 
-        getApplicationContext().deleteDatabase("database.db"); // DEBUG
+//        getApplicationContext().deleteDatabase("database.db"); // DEBUG
 
         BarcodeBattlerDatabaseAdapter databaseAdapter = new BarcodeBattlerDatabaseAdapter(getApplicationContext());
         databaseAdapter.open();

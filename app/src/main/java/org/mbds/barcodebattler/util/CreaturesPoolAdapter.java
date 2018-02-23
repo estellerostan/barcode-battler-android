@@ -70,6 +70,9 @@ public class CreaturesPoolAdapter extends ArrayAdapter<ICreature> {
         Button addToBattle = returnView.findViewById(R.id.addToBattle);
         addToBattle.setVisibility(View.GONE);
 
+        Button addToNetworkBattle = returnView.findViewById(R.id.addToNetworkBattle);
+        addToNetworkBattle.setVisibility(View.GONE);
+
         return returnView;
     }
 }

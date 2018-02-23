@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Barcode Battler</string>
 
+    <!-- Main Activity -->
+    <string name="toNetWorkBattle">Join network battle</string>
+
+
     <!-- Creature Generator & Pool Strings -->
     <string name="label_generator">Barcode: </string>
     <string name="button_generator">Generer une créature (manuellement)</string>
@@ -43,6 +47,7 @@
     <string name="btn_quit">Quit</string>
     <!-- Superhero Activity -->
     <string name="add_to_battle">Combattre</string>
+    <string name="add_to_network_battle">Combattre en réseau</string>
 
 
 </resources>
