@@ -1,7 +1,8 @@
 # Barcode Battler pour Android
 
 Application pour Android sur le même principe que la console vintage “Barcode Battler”.   
-Créée pour le cours de Master 2 "Dev. d'applications mobile Android".   
+Créée dans le cadre du cours "Dev. d'applications mobile Android" du Master MDBS.  
+Projet réalisé par Estelle Rostan et Michaël Gianfaldone.
 
 ## Fonctionnalités du jeu
 
